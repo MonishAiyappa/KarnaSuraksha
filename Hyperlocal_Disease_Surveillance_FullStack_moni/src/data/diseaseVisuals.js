@@ -1,6 +1,6 @@
 import dengue from "../assets/health/diseases/dengue.webp";
 import malaria from "../assets/health/diseases/malaria.webp";
-import chikungunya from "../assets/health/diseases/chikungunya.webp";
+import chikungunya from "../assets/health/diseases/chikungunya.png";
 import influenza from "../assets/health/diseases/influenza.webp";
 import covid19 from "../assets/health/diseases/covid19.webp";
 import tuberculosis from "../assets/health/diseases/tuberculosis.webp";
@@ -8,7 +8,7 @@ import genericDisease from "../assets/health/diseases/generic.webp";
 
 import dengueUpdate from "../assets/health/updates/dengue.webp";
 import malariaUpdate from "../assets/health/updates/malaria.webp";
-import chikungunyaUpdate from "../assets/health/updates/chikungunya.webp";
+import chikungunyaUpdate from "../assets/health/updates/chikungunya.png";
 import respiratoryUpdate from "../assets/health/updates/respiratory.webp";
 import outbreakUpdate from "../assets/health/updates/outbreak.webp";
 import genericUpdate from "../assets/health/updates/generic.webp";

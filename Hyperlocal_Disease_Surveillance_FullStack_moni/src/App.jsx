@@ -10,6 +10,7 @@ import {
 
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
+import AboutSection from "./components/AboutSection";
 import PlatformCapabilities from "./components/PlatformCapabilities";
 import Footer from "./components/Footer";
 
@@ -231,6 +232,8 @@ function AppContent() {
       <Hero
         onSelectRole={goToLogin}
       />
+
+      <AboutSection />
 
       <PlatformCapabilities />
 

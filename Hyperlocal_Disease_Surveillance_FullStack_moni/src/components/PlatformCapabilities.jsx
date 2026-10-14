@@ -1,171 +1,250 @@
 import {
-  Globe,
-  Brain,
-  MapPin,
-  Bell,
+  Map as MapIcon,
+  BarChart3,
   Shield,
-  TrendingUp,
-  ShieldCheck,
+  UserRound,
+  House,
+  ChevronRight,
+  ArrowUpRight,
+  X,
 } from "lucide-react";
+import emblem from "../assets/landing/emblem.png";
+import spreadMap from "../assets/landing/spread-map.jpg";
+import precautionArt from "../assets/landing/precaution-art.jpg";
+import "./landing.css";
 
-const features = [
-  {
-    icon: Globe,
-    title: "Disease Monitoring",
-    desc: "Monitor disease trends across regions with real-time data.",
-  },
-  {
-    icon: Brain,
-    title: "AI Risk Prediction",
-    desc: "Predict low, moderate, and high-risk areas using AI models.",
-  },
-  {
-    icon: MapPin,
-    title: "Geographic Visualization",
-    desc: "Interactive maps at district and taluk levels for better insights.",
-  },
-  {
-    icon: Bell,
-    title: "Early Outbreak Alerts",
-    desc: "Get notified instantly about emerging disease clusters.",
-  },
-  {
-    icon: Shield,
-    title: "Precaution Advisory",
-    desc: "Provide region-specific preventive measures and health recommendations.",
-  },
-  {
-    icon: TrendingUp,
-    title: "Trend Analytics",
-    desc: "Visualize trends and historical patterns through interactive dashboards.",
-  },
+const INSIGHTS = [
+  { name: "Dengue", dot: "#12875a" },
+  { name: "Influenza", dot: "#12875a" },
+  { name: "Chikungunya", dot: "#f2b320" },
+  { name: "Malaria", dot: "#f19a1f", hl: true },
 ];
+
+const TOPICS = [
+  ["Fever", "Home care tips"],
+  ["Cough", "What to avoid care"],
+  ["Stomach ache", "Home remedies"],
+];
+
+function Card({ icon: Icon, title, badge, className = "", children, aside }) {
+  return (
+    <article className={`ks-card ${className}`}>
+      <div className="ks-card__icon">
+        <Icon size={24} strokeWidth={1.8} />
+      </div>
+      <div className="ks-card__body">
+        <h3>
+          {title}
+          {badge && <span className="ks-chip">{badge}</span>}
+        </h3>
+        {children}
+      </div>
+      {aside}
+    </article>
+  );
+}
 
 export default function PlatformCapabilities() {
   return (
-    <section className="bg-[#FCFAF6] border-t border-[#E7E2D8] py-16">
-      <div className="max-w-[1500px] mx-auto px-8">
+    <section id="features" className="ks-features">
+      <div className="ks-wrap">
+        <p className="ks-eyebrow">Our Features</p>
+        <h2 className="ks-h2 ks-h2--wide">
+          Everything You Need for a Safer, Healthier Tomorrow
+        </h2>
+        <p className="ks-features__lead">
+          Powerful features to help you stay informed, respond faster, and keep your community
+          healthy.
+        </p>
 
-        {/* Heading */}
-        <div className="text-center">
-          <h2 className="font-serif text-[56px] font-bold text-[#17203A] leading-tight">
-            Platform Capabilities
-          </h2>
+        <div className="ks-fgrid">
+          {/* Arrows connecting the center emblem to the feature cards */}
+          <svg
+            className="ks-connectors"
+            viewBox="0 0 1000 420"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <defs>
+              <marker
+                id="ks-arrowhead"
+                markerWidth="9"
+                markerHeight="9"
+                refX="7.5"
+                refY="4.5"
+                orient="auto"
+                markerUnits="userSpaceOnUse"
+              >
+                <path d="M0,0 L9,4.5 L0,9 Z" fill="#16834b" />
+              </marker>
+            </defs>
 
-          <ShieldCheck
-            size={18}
-            className="mx-auto text-[#118136] mt-3"
-          />
+            <path d="M430 66 H405" markerEnd="url(#ks-arrowhead)" />
+            <path d="M570 66 H595" markerEnd="url(#ks-arrowhead)" />
+            <path d="M430 168 H405" markerEnd="url(#ks-arrowhead)" />
+            <path d="M570 168 H595" markerEnd="url(#ks-arrowhead)" />
+          </svg>
 
-          <p className="mt-3 max-w-[720px] mx-auto text-[18px] leading-8 text-[#61708C]">
-            Intelligent tools designed to support proactive disease
-            surveillance and informed public health decisions.
+          {/* Predictive Spread Map */}
+          <div className="ks-fgrid__a ks-card ks-card--media">
+            <img
+              src={spreadMap}
+              alt="Predicted spread heat map"
+              className="ks-media ks-media--dark"
+            />
+            <div className="ks-card__icon">
+              <MapIcon size={24} strokeWidth={1.8} />
+            </div>
+            <div className="ks-card__body">
+              <h3>
+                Predictive Spread Map <span className="ks-chip">AI-Powered</span>
+              </h3>
+              <ul>
+                <li>7-14 day estimated zone map using:</li>
+                <li>• Case clusters + population density</li>
+                <li>• Historical patterns</li>
+                <li>• Serious pings</li>
+                <li>• Prepare for outbreaks</li>
+                <li>• Plan resource better</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Center emblem */}
+          <div className="ks-fgrid__c ks-center">
+            <img src={emblem} alt="Karna Suraksha" />
+            <h3>Karna Suraksha</h3>
+            <p>
+              Stay Informed,
+              <br />
+              Protected, Healthy
+            </p>
+          </div>
+
+          {/* Risk Zone */}
+          <Card
+            icon={BarChart3}
+            title="Risk Zone & Disease Insights"
+            className="ks-fgrid__b ks-card--split"
+            aside={
+              <div className="ks-mini ks-mini--insights">
+                <h5>Health Insights</h5>
+                <ul>
+                  {INSIGHTS.map((d) => (
+                    <li key={d.name} className={d.hl ? "is-hl" : ""}>
+                      <i style={{ background: d.dot }} />
+                      <span>{d.name}</span>
+                      <ArrowUpRight size={12} color="#e5412d" />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            }
+          >
+            <p>Track, monitor, and analyse. Get real-time</p>
+            <p className="ks-card__sub">insights on :</p>
+            <ul>
+              <li>• Hotspot and high-risk zones</li>
+              <li>• Disease trends</li>
+              <li>• Seasonal patterns</li>
+              <li>• Variant emergence + Early warning alerts</li>
+            </ul>
+          </Card>
+
+          {/* Precautionary Measures */}
+          <div className="ks-fgrid__d ks-card ks-card--media ks-card--media-light">
+            <img
+              src={precautionArt}
+              alt="Doctor wearing a mask"
+              className="ks-media"
+            />
+            <div className="ks-card__icon">
+              <Shield size={24} strokeWidth={1.8} />
+            </div>
+            <div className="ks-card__body">
+              <h3>Precautionary Measures</h3>
+              <ul>
+                <li>Get clear information on:</li>
+                <li>• Disease-specific prevention steps</li>
+                <li>• Personal hygiene practices</li>
+                <li>• Ways to reduce exposure &amp; transmission</li>
+                <li>• Safe water &amp; sanitation measures</li>
+                <li>• Community-level protective actions</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Medical Assistant */}
+          <Card
+            icon={UserRound}
+            title="Medical Assistant"
+            className="ks-fgrid__e ks-card--split"
+            aside={
+              <div className="ks-mini ks-mini--chat">
+                <div className="ks-chat__ask">
+                  <UserRound size={14} /> Ask your health query...
+                </div>
+                <span>What are the symptoms of dengue?</span>
+                <span>What precautions should I take?</span>
+                <span>When to seek treatment?</span>
+              </div>
+            }
+          >
+            <p>24/7 AI assistant for your health.</p>
+            <p className="ks-card__gap">
+              Get answers, precautions,
+              <br className="ks-br" /> guidance on:
+            </p>
+            <ul>
+              <li>• Common symptoms</li>
+              <li>• Treatment options</li>
+              <li>• Doctor consultation</li>
+              <li>• Stay informed, stay safer</li>
+            </ul>
+          </Card>
+
+          {/* Home Relief */}
+          <Card
+            icon={House}
+            title="Home Relief"
+            className="ks-fgrid__f ks-card--split"
+            aside={
+              <div className="ks-mini ks-mini--topics">
+                <h5>
+                  Popular Topics <X size={12} />
+                </h5>
+                <ul>
+                  {TOPICS.map(([a, b]) => (
+                    <li key={a}>
+                      <i />
+                      <span>
+                        {a} – {b}
+                      </span>
+                      <ChevronRight size={13} />
+                    </li>
+                  ))}
+                  <li className="is-alert">
+                    <i />
+                    <span>View what&apos;s in a nearby limits</span>
+                  </li>
+                </ul>
+              </div>
+            }
+          >
+            <p>Need quick relief? Get home-care tips, symptom-based</p>
+            <p>suggestions, and know when to see the doctor.</p>
+            <ul>
+              <li>• Identify symptoms</li>
+              <li>• Safety dos &amp; donts</li>
+            </ul>
+          </Card>
+
+          <p className="ks-fgrid__tag" aria-hidden="true">
+            Healthy People
+            <br />
+            Stronger Communities
           </p>
         </div>
-
-        {/* Feature Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-8 mt-14">
-
-          {features.map((item, index) => {
-            const Icon = item.icon;
-
-            return (
-              <div
-                key={index}
-                className="
-                  group
-                  bg-white
-                  border
-                  border-[#E8E3D9]
-                  rounded-[22px]
-                  shadow-[0_6px_18px_rgba(0,0,0,0.06)]
-                  px-6
-                  py-8
-                  min-h-[270px]
-                  flex
-                  flex-col
-                  items-center
-                  text-center
-                  transition-all
-                  duration-500
-                  hover:bg-[#118136]
-                  hover:-translate-y-3
-                  hover:shadow-[0_18px_40px_rgba(17,129,54,0.30)]
-                "
-              >
-
-                {/* Icon */}
-                <div
-                  className="
-                    w-16
-                    h-16
-                    rounded-full
-                    bg-[#EDF8F0]
-                    flex
-                    items-center
-                    justify-center
-                    transition-all
-                    duration-500
-                    group-hover:bg-white
-                  "
-                >
-                  <Icon
-                    size={30}
-                    className="text-[#118136]"
-                  />
-                </div>
-
-                {/* Title */}
-                <h3
-                  className="
-                    mt-6
-                    text-[20px]
-                    font-semibold
-                    text-[#17203A]
-                    leading-7
-                    transition-colors
-                    duration-300
-                    group-hover:text-white
-                  "
-                >
-                  {item.title}
-                </h3>
-
-                {/* Description */}
-                <p
-                  className="
-                    mt-4
-                    text-[15px]
-                    leading-7
-                    text-[#61708C]
-                    flex-1
-                    transition-colors
-                    duration-300
-                    group-hover:text-white/95
-                  "
-                >
-                  {item.desc}
-                </p>
-
-                {/* Bottom Line */}
-                <div
-                  className="
-                    w-10
-                    h-[3px]
-                    rounded-full
-                    bg-[#118136]
-                    mt-6
-                    transition-all
-                    duration-300
-                    group-hover:w-20
-                    group-hover:bg-white
-                  "
-                />
-              </div>
-            );
-          })}
-        </div>
-
       </div>
     </section>
   );
