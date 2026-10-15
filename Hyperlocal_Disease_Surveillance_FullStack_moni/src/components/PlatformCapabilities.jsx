@@ -100,12 +100,12 @@ export default function PlatformCapabilities() {
                 Predictive Spread Map <span className="ks-chip">AI-Powered</span>
               </h3>
               <ul>
-                <li>7-14 day estimated zone map using:</li>
-                <li>• Case clusters + population density</li>
-                <li>• Historical patterns</li>
-                <li>• Serious pings</li>
-                <li>• Prepare for outbreaks</li>
-                <li>• Plan resource better</li>
+                <li className="ks-li-head">7-14 day estimated zone map using:</li>
+                <li>Case clusters + population density</li>
+                <li>Historical patterns</li>
+                <li>Serious pings</li>
+                <li>Prepare for outbreaks</li>
+                <li>Plan resource better</li>
               </ul>
             </div>
           </div>
@@ -144,10 +144,10 @@ export default function PlatformCapabilities() {
             <p>Track, monitor, and analyse. Get real-time</p>
             <p className="ks-card__sub">insights on :</p>
             <ul>
-              <li>• Hotspot and high-risk zones</li>
-              <li>• Disease trends</li>
-              <li>• Seasonal patterns</li>
-              <li>• Variant emergence + Early warning alerts</li>
+              <li>Hotspot and high-risk zones</li>
+              <li>Disease trends</li>
+              <li>Seasonal patterns</li>
+              <li>Variant emergence + Early warning alerts</li>
             </ul>
           </Card>
 
@@ -164,12 +164,12 @@ export default function PlatformCapabilities() {
             <div className="ks-card__body">
               <h3>Precautionary Measures</h3>
               <ul>
-                <li>Get clear information on:</li>
-                <li>• Disease-specific prevention steps</li>
-                <li>• Personal hygiene practices</li>
-                <li>• Ways to reduce exposure &amp; transmission</li>
-                <li>• Safe water &amp; sanitation measures</li>
-                <li>• Community-level protective actions</li>
+                <li className="ks-li-head">Get clear information on:</li>
+                <li>Disease-specific prevention steps</li>
+                <li>Personal hygiene practices</li>
+                <li>Ways to reduce exposure &amp; transmission</li>
+                <li>Safe water &amp; sanitation measures</li>
+                <li>Community-level protective actions</li>
               </ul>
             </div>
           </div>
@@ -196,10 +196,10 @@ export default function PlatformCapabilities() {
               <br className="ks-br" /> guidance on:
             </p>
             <ul>
-              <li>• Common symptoms</li>
-              <li>• Treatment options</li>
-              <li>• Doctor consultation</li>
-              <li>• Stay informed, stay safer</li>
+              <li>Common symptoms</li>
+              <li>Treatment options</li>
+              <li>Doctor consultation</li>
+              <li>Stay informed, stay safer</li>
             </ul>
           </Card>
 
@@ -234,8 +234,8 @@ export default function PlatformCapabilities() {
             <p>Need quick relief? Get home-care tips, symptom-based</p>
             <p>suggestions, and know when to see the doctor.</p>
             <ul>
-              <li>• Identify symptoms</li>
-              <li>• Safety dos &amp; donts</li>
+              <li>Identify symptoms</li>
+              <li>Safety dos &amp; donts</li>
             </ul>
           </Card>
 

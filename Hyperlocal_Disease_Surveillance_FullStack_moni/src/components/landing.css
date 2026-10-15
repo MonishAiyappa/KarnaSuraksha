@@ -95,7 +95,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 80px; }
 @media (max-width: 719px) {
   .ks-nav__links { display: none; }
   .ks-nav__menu { margin-left: auto; }
-  .ks-dropdown__mobile-links { display: block; }
+  .ks-dropdown__mobile-links { display: none; }
   .ks-nav__inner { height: 64px; }
   .ks-brand__logo { width: 44px; height: 44px; }
   .ks-brand__sub { font-size: 11px; }
@@ -183,22 +183,32 @@ html { scroll-behavior: smooth; scroll-padding-top: 80px; }
 }
 .ks-trusted svg { color: #078a35; }
 
-@media (max-width: 1099px) {
+@media (max-width: 719px) {
+  /* Phone order: badge -> headline -> map -> divider -> paragraph -> button -> trusted.
+     Compact, so the button is on the first screen and the About section can peek in below it. */
   .ks-hero { display: block; min-height: 0; }
-  .ks-hero__inner { display: flex; flex-direction: column; padding-top: 36px; padding-bottom: 0; }
-  .ks-hero__copy { max-width: 620px; }
+  .ks-hero__inner { display: flex; flex-direction: column; padding-top: 12px; padding-bottom: 0; }
+  .ks-hero__copy { display: contents; }
+  .ks-badge { order: 1; align-self: flex-start; flex-wrap: nowrap; white-space: nowrap; gap: 7px; padding: 6px 10px; font-size: 9.5px; letter-spacing: 0.02em; }
+  .ks-hero__title { order: 2; margin: 14px 0 0; font-size: clamp(27px, 8vw, 34px); line-height: 1.08; }
+  .ks-hero__title span, .ks-hero__title em { display: inline; }
+  .ks-hero__title > span::after { content: " "; }
   .ks-hero__scene {
-    position: relative; inset: auto; order: 2; display: block; overflow: hidden;
-    width: auto; height: auto; margin: 8px calc(-1 * clamp(16px, 4vw, 48px)) 0;
+    position: relative; inset: auto; order: 3; display: block; overflow: hidden;
+    width: auto; height: clamp(150px, 46vw, 200px); margin: 10px calc(-1 * clamp(16px, 4vw, 48px)) 0;
   }
-  .ks-hero__scene img { width: 100%; height: auto; margin-top: -8.5%; }
+  .ks-hero__scene img { width: 100%; height: 100%; margin-top: 0; object-fit: cover; object-position: 55% 22%; }
+  .ks-hero__rule { order: 4; margin-top: 10px; width: 100%; max-width: 620px; }
+  .ks-hero__rule b { width: 24px; height: 24px; margin-inline: 12px; }
+  .ks-hero__lead { order: 5; max-width: 620px; margin-top: 10px; font-size: 14px; line-height: 1.6; }
+  .ks-cta { order: 6; max-width: 620px; margin-top: 14px; }
+  .ks-trusted { order: 7; max-width: 620px; justify-content: center; margin-top: 10px; margin-bottom: 28px; }
 }
 @media (max-width: 479px) {
-  .ks-cta { height: 76px; padding: 0 18px; }
+  .ks-cta { height: 64px; padding: 0 18px; }
   .ks-cta__icon { width: 36px; }
   .ks-cta__text strong { font-size: 18px; }
   .ks-cta__text small { font-size: 13px; }
-  .ks-hero__rule { margin-top: 26px; }
 }
 
 /* ---------- Shared section type ---------- */
@@ -280,7 +290,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 80px; }
 .ks-reports i { width: 9px; height: 9px; border-radius: 50%; border: 2px solid #0b6d2e; }
 .ks-reports time { font-size: 11px; color: #5b7066; }
 
-@media (max-width: 1023px) {
+@media (max-width: 719px) {
   .ks-about__grid { grid-template-columns: 1fr; }
   .ks-about__scenery { opacity: 0.2; }
   .ks-h2 { max-width: 14em; }
@@ -371,7 +381,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 80px; }
   border-radius: 0 0 60% 10%;
 }
 
-@media (max-width: 1099px) {
+@media (max-width: 719px) {
   .ks-fgrid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     grid-template-areas:
@@ -386,7 +396,9 @@ html { scroll-behavior: smooth; scroll-padding-top: 80px; }
   .ks-fgrid__tag { grid-area: auto; grid-column: 1 / -1; justify-self: center; transform: none; border: 0; padding: 8px 0 0; }
 }
 @media (max-width: 719px) {
-  .ks-fgrid { grid-template-columns: 1fr; grid-template-areas: "c" "a" "b" "d" "e" "f"; }
+  /* phone: no emblem / "Karna Suraksha" block in the features section */
+  .ks-center, .ks-fgrid__tag { display: none; }
+  .ks-fgrid { grid-template-columns: 1fr; grid-template-areas: "a" "b" "d" "e" "f"; }
   .ks-card { flex-wrap: wrap; }
   .ks-card--media .ks-media { width: 100%; height: 170px; }
   .ks-card--media-light .ks-media { height: 190px; }
@@ -430,7 +442,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 80px; }
    Every size is measured on an 840px-wide canvas and scaled with --u,
    so the page keeps the exact proportions of the design at any width.
 ============================================================ */
-@media (min-width: 1100px) {
+@media (min-width: 720px) {
 .ks-nav, .ks-hero, .ks-about, .ks-features, .ks-footer { --u: calc(min(100vw, 1920px) / 840); overflow-x: clip; }
 .ks-br { display: inline; }
 .ks-wrap, .ks-nav__inner, .ks-hero__inner, .ks-footer__inner { width: calc(840 * var(--u)); max-width: none; margin-inline: auto; padding: 0; position: relative; }
@@ -765,7 +777,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 80px; }
 }
 
 /* Laptop and desktop footer layout */
-@media (min-width: 1100px) {
+@media (min-width: 720px) {
   .ks-footer {
     height: calc(120 * var(--u));
     min-height: 0;
@@ -885,3 +897,66 @@ html { scroll-behavior: smooth; scroll-padding-top: 80px; }
     text-align: center;
   }
 }}
+
+/* ---- fixes on top of the updated landing page ---- */
+.ks-card li.ks-li-head { list-style: none; margin-left: -16px; }
+
+/* arrows between the centre emblem and the feature cards (desktop only) */
+.ks-connectors { display: none; }
+.ks-connectors path { fill: none; stroke: #16834b; stroke-width: 1.4; vector-effect: non-scaling-stroke; }
+
+@media (min-width: 720px) {
+  .ks-card li.ks-li-head { margin-left: calc(-9 * var(--u)); }
+  .ks-connectors { display: block; position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 0; }
+  .ks-fgrid > .ks-card, .ks-fgrid > .ks-center { z-index: 1; }
+  /* longer copy needs slightly smaller type so it never runs under the side widgets */
+  .ks-fgrid__f p { font-size: calc(6.5 * var(--u)); }
+  .ks-fgrid__b p, .ks-fgrid__b ul { font-size: calc(6.8 * var(--u)); }
+}
+
+/* ============================================================
+   RESPONSIVE REFINEMENTS (< 1100px)
+============================================================ */
+@media (max-width: 719px) {
+  /* dashboard heat map keeps its shape instead of stretching */
+  .ks-dash__top { align-items: start; }
+  .ks-dash__map { padding: 0; aspect-ratio: 134 / 103; height: auto; overflow: hidden; border-radius: 8px; }
+  .ks-dash__map img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* image-led feature cards: picture on top, text below */
+  .ks-card--media { flex-wrap: wrap; }
+  .ks-card--media .ks-media { width: 100%; height: 150px; object-fit: cover; }
+  .ks-card--media-light .ks-media { object-fit: contain; height: 160px; }
+}
+@media (max-width: 599px) {
+  .ks-dash__map { max-width: 260px; margin-inline: auto; width: 100%; }
+}
+
+/* Phone: the page ends exactly at the footer - no bounce / blank area below it */
+@media (max-width: 719px) {
+  html:has(.ks-footer), body:has(.ks-footer) { overscroll-behavior-y: none; }
+  .ks-footer { margin-bottom: 0; padding-bottom: env(safe-area-inset-bottom, 0px); }
+}
+
+/* ---- bullets: Tailwind's reset removes them, so they are restored for the card text lists only ---- */
+.ks-card__body ul { list-style: disc outside; }
+
+/* ============================================================
+   ROBUST FEATURE CARDS (laptop + tablet)
+   Card text flows and may wrap, and a card grows if its text needs more room, so
+   different font widths / browsers can never push text under the side panels.
+============================================================ */
+@media (min-width: 720px) {
+  .ks-fgrid {
+    align-items: stretch;
+    grid-template-rows: minmax(calc(115 * var(--u)), auto) calc(10 * var(--u)) minmax(calc(118 * var(--u)), auto) calc(14 * var(--u)) minmax(calc(106 * var(--u)), auto);
+  }
+  .ks-card { height: auto; }
+  .ks-fgrid__f { height: auto; }
+  .ks-fgrid .ks-card__body { position: static; left: auto; top: auto; padding: calc(10 * var(--u)) 0 calc(3 * var(--u)); }
+  .ks-fgrid__a .ks-card__body, .ks-fgrid__d .ks-card__body { margin-left: calc(161 * var(--u)); margin-right: calc(8 * var(--u)); }
+  .ks-fgrid__b .ks-card__body { margin-left: calc(44 * var(--u)); margin-right: calc(124 * var(--u)); }
+  .ks-fgrid__e .ks-card__body { margin-left: calc(44 * var(--u)); margin-right: calc(139 * var(--u)); }
+  .ks-fgrid__f .ks-card__body { margin-left: calc(49 * var(--u)); margin-right: calc(166 * var(--u)); }
+  .ks-card h3 { white-space: normal; flex-wrap: wrap; }
+  .ks-card p, .ks-card ul { white-space: normal; }
+}
