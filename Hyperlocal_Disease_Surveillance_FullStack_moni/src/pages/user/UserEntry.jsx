@@ -5,21 +5,29 @@ import {
 
 import {
   Eye,
+  HeartPulse,
+  ShieldCheck,
   User,
+  Users,
 } from "lucide-react";
+
+import {
+  FaGithub,
+  FaLinkedin,
+  FaTwitter,
+} from "react-icons/fa";
+
+import { FaXTwitter } from "react-icons/fa6";
 
 import LocationSelector from "../../components/LocationSelector";
 
-import {
-  AssistantIcon,
-  BrandShield,
-  CalendarIcon,
-  HomeReliefIcon,
-  MapPinIcon,
-  ShieldBellIcon,
-} from "./UserEntryIcons";
+import iconWeekly from "../../assets/ui/user-entry-icon-weekly.png";
+import iconMap from "../../assets/ui/user-entry-icon-map.png";
+import iconAlerts from "../../assets/ui/user-entry-icon-alerts.png";
+import iconAssistant from "../../assets/ui/user-entry-icon-assistant.png";
+import iconRelief from "../../assets/ui/user-entry-icon-relief.png";
 
-import landscapeImage from "../../assets/ui/user-entry-landscape.png";
+import emblem from "../../assets/landing/emblem.png";
 
 import "./UserEntry.css";
 
@@ -31,32 +39,27 @@ import "./UserEntry.css";
 const FEATURES = [
   {
     key: "weekly",
-    tone: "green",
-    Icon: CalendarIcon,
+    icon: iconWeekly,
     label: ["Weekly", "Health Updates"],
   },
   {
     key: "map",
-    tone: "mint",
-    Icon: MapPinIcon,
+    icon: iconMap,
     label: ["Community", "Risk Map"],
   },
   {
     key: "alerts",
-    tone: "violet",
-    Icon: ShieldBellIcon,
+    icon: iconAlerts,
     label: ["Precautions &", "Alerts"],
   },
   {
     key: "assistant",
-    tone: "sky",
-    Icon: AssistantIcon,
+    icon: iconAssistant,
     label: ["Medical", "Assistant"],
   },
   {
     key: "relief",
-    tone: "leaf",
-    Icon: HomeReliefIcon,
+    icon: iconRelief,
     label: ["Home Relief"],
     note: "(Quick Support)",
   },
@@ -64,7 +67,23 @@ const FEATURES = [
 
 
 // ============================================================
+// FOOTER PILLARS
+// ============================================================
+
+const PILLARS = [
+  { key: "safe", Icon: ShieldCheck, text: "Safe Communities" },
+  { key: "health", Icon: HeartPulse, text: "Better Health" },
+  { key: "together", Icon: Users, text: "Stronger Together" },
+];
+
+
+// ============================================================
 // USER ENTRY (User Portal login page)
+//
+// Laptop + tablet (720px and wider): the approved desktop design,
+// scaled to the screen width.
+// Phone (under 720px): the approved phone design (single column).
+// Both are produced by the same markup - see UserEntry.css.
 // ============================================================
 
 export default function UserEntry({
@@ -147,273 +166,367 @@ export default function UserEntry({
     <div className="ku-page">
 
       {/* ====================================================
-          BACKGROUND LANDSCAPE
+          STAGE (painted landscape + everything above the footer)
       ==================================================== */}
 
-      <img
-        className="ku-landscape"
-        src={landscapeImage}
-        alt=""
-        aria-hidden="true"
-        draggable="false"
-      />
+      <div className="ku-stage">
 
+        <div className="ku-canvas">
 
-      <div className="ku-shell">
+          {/* ================================================
+              HEADER
+          ================================================ */}
 
-        {/* ==================================================
-            HEADER
-        ================================================== */}
+          <header className="ku-header">
 
-        <header className="ku-header">
-
-          <button
-            type="button"
-            className="ku-brand"
-            onClick={onBack}
-            aria-label="Karna Suraksha - back to home"
-          >
-
-            <BrandShield className="ku-brand-shield" />
-
-            <span className="ku-brand-text">
-
-              <span className="ku-brand-name">
-                Karna Suraksha
-              </span>
-
-              <span className="ku-brand-sub">
-                Disease Surveillance Platform
-              </span>
-
-            </span>
-
-          </button>
-
-
-          <p className="ku-tagline">
-
-            <span>Safer Communities</span>
-
-            <i aria-hidden="true" />
-
-            <span>Healthier Tomorrow</span>
-
-          </p>
-
-        </header>
-
-
-        {/* ==================================================
-            MAIN
-        ================================================== */}
-
-        <main className="ku-main">
-
-
-          {/* ----------------------------------------------
-              LEFT: MESSAGE + FEATURES
-          ---------------------------------------------- */}
-
-          <section className="ku-hero">
-
-            <h1 className="ku-headline">
-              <span>Stay Informed.</span>
-              <span>Stay Protected.</span>
-              <span>Stay Healthy.</span>
-            </h1>
-
-
-            <p className="ku-lead">
-              Access local health updates,
-              community risk information,
-              precautions and alerts — all in one place.
-            </p>
-
-
-            <ul className="ku-features">
-
-              {FEATURES.map(
-                ({
-                  key,
-                  tone,
-                  Icon,
-                  label,
-                  note,
-                }) => (
-
-                  <li
-                    key={key}
-                    className="ku-feature"
-                  >
-
-                    <span
-                      className={`ku-feature-icon ku-tone-${tone}`}
-                    >
-                      <Icon />
-                    </span>
-
-                    <span className="ku-feature-label">
-
-                      {label.map((line) => (
-                        <span key={line}>
-                          {line}
-                        </span>
-                      ))}
-
-                      {note && (
-                        <span className="ku-feature-note">
-                          {note}
-                        </span>
-                      )}
-
-                    </span>
-
-                  </li>
-
-                )
-              )}
-
-            </ul>
-
-          </section>
-
-
-          {/* ----------------------------------------------
-              RIGHT: USER PORTAL CARD
-          ---------------------------------------------- */}
-
-          <section
-            className="ku-card"
-            aria-labelledby="ku-card-title"
-          >
-
-            <div
-              className="ku-avatar"
-              aria-hidden="true"
+            <button
+              type="button"
+              className="ku-brand"
+              onClick={onBack}
+              aria-label="Karna Suraksha - back to home"
             >
-              <User
-                size={40}
-                strokeWidth={1.9}
+
+              <img
+                className="ku-brand-logo"
+                src={emblem}
+                alt=""
+                draggable="false"
               />
-            </div>
+
+              <span className="ku-brand-text">
+
+                <span className="ku-brand-name">
+                  Karna Suraksha
+                </span>
+
+                <span className="ku-brand-sub">
+                  Disease Surveillance Platform
+                </span>
+
+              </span>
+
+            </button>
 
 
-            <h2 id="ku-card-title">
-              User Portal
-            </h2>
+            <p className="ku-tagline">
 
+              <span>Safer Communities</span>
 
-            <p className="ku-card-sub">
-              Enter your name and select your
-              default location to view disease
-              surveillance data.
+              <i aria-hidden="true" />
+
+              <span>Healthier Tomorrow</span>
+
             </p>
 
+          </header>
 
-            <form
-              className="ku-form"
-              onSubmit={handleSubmit}
-              noValidate
+
+          {/* ================================================
+              MAIN
+          ================================================ */}
+
+          <main className="ku-main">
+
+
+            {/* --------------------------------------------
+                MESSAGE + FEATURES
+            -------------------------------------------- */}
+
+            <section className="ku-hero">
+
+              <h1 className="ku-headline">
+                <span>Stay Informed.</span>
+                <i aria-hidden="true" />
+                <span>Stay Protected.</span>
+                <i aria-hidden="true" />
+                <span>Stay Healthy.</span>
+              </h1>
+
+
+              <p className="ku-lead">
+                Access local health updates,
+                community risk information,
+                <br className="ku-br" />
+                {" "}precautions and alerts — all in one place.
+              </p>
+
+
+              <ul className="ku-features">
+
+                {FEATURES.map(
+                  ({
+                    key,
+                    icon,
+                    label,
+                    note,
+                  }) => (
+
+                    <li
+                      key={key}
+                      className="ku-feature"
+                    >
+
+                      <span className="ku-feature-icon">
+                        <img
+                          src={icon}
+                          alt=""
+                          draggable="false"
+                        />
+                      </span>
+
+                      <span className="ku-feature-label">
+
+                        {label.map((line) => (
+                          <span key={line}>
+                            {line}
+                          </span>
+                        ))}
+
+                        {note && (
+                          <span className="ku-feature-note">
+                            {note}
+                          </span>
+                        )}
+
+                      </span>
+
+                    </li>
+
+                  )
+                )}
+
+              </ul>
+
+            </section>
+
+
+            {/* --------------------------------------------
+                USER PORTAL CARD
+            -------------------------------------------- */}
+
+            <section
+              className="ku-card"
+              aria-labelledby="ku-card-title"
             >
 
-              {/* NAME */}
+              <div className="ku-card-head">
 
-              <div className="ku-field">
-
-                <label htmlFor="ku-name">
-                  Your Name
-                </label>
-
-                <div className="ku-input">
-
+                <div
+                  className="ku-avatar"
+                  aria-hidden="true"
+                >
                   <User
-                    className="ku-input-icon"
-                    size={25}
-                    strokeWidth={1.6}
-                    aria-hidden="true"
+                    strokeWidth={1.9}
                   />
+                </div>
 
-                  <input
-                    id="ku-name"
-                    ref={nameRef}
-                    type="text"
-                    value={username}
-                    onChange={(event) => {
+                <h2 id="ku-card-title">
+                  User Portal
+                </h2>
 
-                      setUsername(
-                        event.target.value
-                      );
+              </div>
 
-                      if (error) {
-                        setError("");
-                      }
 
-                    }}
-                    placeholder="e.g. Ramesh Kumar"
-                    autoComplete="name"
-                    maxLength={60}
+              <p className="ku-card-sub">
+                Enter your name and select your default location to view
+                <br className="ku-br" />
+                {" "}disease surveillance data.
+              </p>
+
+
+              <form
+                className="ku-form"
+                onSubmit={handleSubmit}
+                noValidate
+              >
+
+                {/* NAME */}
+
+                <div className="ku-field">
+
+                  <label htmlFor="ku-name">
+                    Your Name
+                  </label>
+
+                  <div className="ku-input">
+
+                    <User
+                      className="ku-input-icon"
+                      strokeWidth={1.6}
+                      aria-hidden="true"
+                    />
+
+                    <input
+                      id="ku-name"
+                      ref={nameRef}
+                      type="text"
+                      value={username}
+                      onChange={(event) => {
+
+                        setUsername(
+                          event.target.value
+                        );
+
+                        if (error) {
+                          setError("");
+                        }
+
+                      }}
+                      placeholder="e.g. Ramesh Kumar"
+                      autoComplete="name"
+                      maxLength={60}
+                    />
+
+                  </div>
+
+                </div>
+
+
+                {/* LOCATION */}
+
+                <div className="ku-field ku-field-location">
+
+                  {/* shown on phones only; on laptop/tablet this text is the State label */}
+                  <span className="ku-field-title">
+                    Your Default Location
+                  </span>
+
+                  <LocationSelector
+                    variant="portal"
+                    onChange={handleLocationChange}
                   />
 
                 </div>
 
-              </div>
+
+                {/* ERROR */}
+
+                {error && (
+
+                  <p
+                    className="ku-error"
+                    role="alert"
+                  >
+                    {error}
+                  </p>
+
+                )}
 
 
-              {/* LOCATION */}
+                {/* SUBMIT */}
 
-              <div className="ku-field ku-field-location">
-
-                <span className="ku-field-title">
-                  Your Default Location
-                </span>
-
-                <LocationSelector
-                  variant="portal"
-                  onChange={handleLocationChange}
-                />
-
-              </div>
-
-
-              {/* ERROR */}
-
-              {error && (
-
-                <p
-                  className="ku-error"
-                  role="alert"
+                <button
+                  type="submit"
+                  className="ku-submit"
                 >
-                  {error}
-                </p>
 
-              )}
+                  <Eye
+                    strokeWidth={1.8}
+                    aria-hidden="true"
+                  />
 
+                  View Disease Surveillance
 
-              {/* SUBMIT */}
+                </button>
 
-              <button
-                type="submit"
-                className="ku-submit"
-              >
+              </form>
 
-                <Eye
-                  size={26}
-                  strokeWidth={1.8}
-                  aria-hidden="true"
-                />
+            </section>
 
-                View Disease Surveillance
+          </main>
 
-              </button>
-
-            </form>
-
-          </section>
-
-        </main>
+        </div>
 
       </div>
+
+
+      {/* ====================================================
+          FOOTER
+      ==================================================== */}
+
+      <footer className="ku-footer">
+
+        <div className="ku-footer-inner">
+
+          <div className="ku-footer-brand">
+
+            <img
+              src={emblem}
+              alt=""
+              draggable="false"
+            />
+
+            <div>
+
+              <strong>Karna Suraksha</strong>
+
+              <small>Disease Surveillance Platform</small>
+
+            </div>
+
+          </div>
+
+
+          <ul className="ku-footer-pillars">
+
+            {PILLARS.map(({ key, Icon, text }) => (
+
+              <li key={key}>
+
+                <Icon aria-hidden="true" />
+
+                <span>{text}</span>
+
+              </li>
+
+            ))}
+
+          </ul>
+
+
+          <div className="ku-footer-social">
+
+            <h3>Connect With Us</h3>
+
+            <div>
+
+              <a
+                href="#"
+                aria-label="Twitter"
+                onClick={(event) => event.preventDefault()}
+              >
+                <FaTwitter className="ku-ico-desktop" />
+                <FaXTwitter className="ku-ico-phone" />
+              </a>
+
+              <a
+                href="#"
+                aria-label="LinkedIn"
+                onClick={(event) => event.preventDefault()}
+              >
+                <FaLinkedin />
+              </a>
+
+              <a
+                href="#"
+                aria-label="GitHub"
+                onClick={(event) => event.preventDefault()}
+              >
+                <FaGithub />
+              </a>
+
+            </div>
+
+          </div>
+
+
+          <p className="ku-footer-copy">
+            © {new Date().getFullYear()} Karna Suraksha. All rights reserved.
+          </p>
+
+        </div>
+
+      </footer>
 
     </div>
   );

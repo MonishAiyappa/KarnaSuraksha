@@ -16,11 +16,48 @@ import { DistrictIcon } from "../pages/user/UserEntryIcons";
 import "./LocationSelector.css";
 
 
+// True on phones (< 720px). Used only by the "portal" variant so the placeholders
+// and labels can follow the phone / laptop designs. No effect on other variants.
+function useIsPhone() {
+
+  const query = "(max-width: 719px)";
+
+  const [isPhone, setIsPhone] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      typeof window.matchMedia === "function" &&
+      window.matchMedia(query).matches
+  );
+
+  useEffect(() => {
+
+    if (typeof window.matchMedia !== "function") {
+      return undefined;
+    }
+
+    const media = window.matchMedia(query);
+
+    const update = () => setIsPhone(media.matches);
+
+    update();
+
+    media.addEventListener?.("change", update);
+
+    return () => media.removeEventListener?.("change", update);
+
+  }, []);
+
+  return isPhone;
+}
+
+
 export default function LocationSelector({
   value = null,
   onChange,
   variant = "default",
 }) {
+
+  const isPhone = useIsPhone();
 
   const [
     states,
@@ -509,6 +546,7 @@ export default function LocationSelector({
       {
         id: "location-state",
         label: "State",
+        desktopLabel: "Your Default Location",
         icon: <MapPin size={25} strokeWidth={1.6} />,
         value: selectedState,
         onChange: handleStateChange,
@@ -531,7 +569,7 @@ export default function LocationSelector({
         placeholder: loadingDistricts
           ? "Loading Districts..."
           : !selectedState
-            ? "Select State First"
+            ? (isPhone ? "Select District" : "Select State First")
             : "Select District",
         options: districts,
       },
@@ -548,7 +586,7 @@ export default function LocationSelector({
         placeholder: loadingTaluks
           ? "Loading Taluks..."
           : !selectedDistrict
-            ? "Select District First"
+            ? (isPhone ? "Select Taluk" : "Select District First")
             : "Select Taluk",
         options: taluks,
       },
@@ -568,7 +606,18 @@ export default function LocationSelector({
           >
 
             <label htmlFor={field.id}>
-              {field.label}
+              {field.desktopLabel ? (
+                <>
+                  <span className="ls-label-phone">
+                    {field.label}
+                  </span>
+                  <span className="ls-label-desktop">
+                    {field.desktopLabel}
+                  </span>
+                </>
+              ) : (
+                field.label
+              )}
             </label>
 
 

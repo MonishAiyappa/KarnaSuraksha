@@ -188,3 +188,26 @@
   }
 
 }
+
+
+/* ------------------------------------------------------------
+   STATE LABEL
+   Phones: "State" (the heading "Your Default Location" sits above, in UserEntry).
+   Laptop + tablet (>= 720px): "Your Default Location" is the State label.
+   ------------------------------------------------------------ */
+
+.ls-label-desktop {
+  display: none;
+}
+
+@media (min-width: 720px) {
+
+  .ls-label-phone {
+    display: none;
+  }
+
+  .ls-label-desktop {
+    display: inline;
+  }
+
+}
