@@ -1,70 +1,114 @@
 import {
+  HeartPulse,
   ShieldCheck,
-  FileText,
-  Scale,
-  Phone,
+  Users,
 } from "lucide-react";
 
+import {
+  FaGithub,
+  FaLinkedin,
+  FaTwitter,
+} from "react-icons/fa";
+
+import { FaXTwitter } from "react-icons/fa6";
+
+import emblem from "../../../assets/landing/emblem.png";
+
+import "../UserDashboard.css";
+
+
+// ============================================================
+// PORTAL FOOTER (shown under every user page)
+// ============================================================
+
+const PILLARS = [
+  { key: "safe", Icon: ShieldCheck, text: "Safe Communities" },
+  { key: "health", Icon: HeartPulse, text: "Better Health" },
+  { key: "together", Icon: Users, text: "Stronger Together" },
+];
+
+
 export default function Footer() {
+
   return (
-    <footer className="mt-12 bg-[#0F6A37] text-white">
 
-      <div className="mx-auto flex max-w-[1600px] items-center justify-between px-10 py-6">
+    <footer className="ud-footer">
 
-        {/* Left */}
+      <div className="ud-footer-inner">
 
-        <div className="flex items-center gap-4">
+        <div className="ud-footer-brand">
 
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15">
-            <ShieldCheck size={26} />
-          </div>
+          <img
+            src={emblem}
+            alt=""
+            draggable="false"
+          />
 
           <div>
 
-            <h3 className="text-[22px] font-bold">
-              Karna Suraksha
-            </h3>
+            <strong>Karna Suraksha</strong>
 
-            <p className="text-sm text-white/80">
-              Disease Surveillance System
-            </p>
+            <small>Disease Surveillance Platform</small>
 
           </div>
 
         </div>
 
-        {/* Center */}
 
-        <div className="flex items-center gap-12">
+        <ul className="ud-footer-pillars">
 
-          <button className="flex items-center gap-2 text-[15px] text-white/90 transition hover:text-white">
-            <FileText size={18} />
-            Privacy Policy
-          </button>
+          {PILLARS.map(({ key, Icon, text }) => (
 
-          <button className="flex items-center gap-2 text-[15px] text-white/90 transition hover:text-white">
-            <Scale size={18} />
-            Terms of Use
-          </button>
+            <li key={key}>
 
-          <button className="flex items-center gap-2 text-[15px] text-white/90 transition hover:text-white">
-            <Phone size={18} />
-            Contact Us
-          </button>
+              <Icon aria-hidden="true" />
 
-        </div>
+              <span>{text}</span>
 
-        {/* Right */}
+            </li>
 
-        <div className="text-right">
+          ))}
 
-          <p className="text-[15px] text-white/90">
-            © 2026 Karna Suraksha
-          </p>
+        </ul>
 
-          <p className="mt-1 text-sm text-white/70">
-            All rights reserved.
-          </p>
+
+        <p className="ud-footer-copy">
+          © {new Date().getFullYear()} Karna Suraksha. All rights reserved.
+        </p>
+
+
+        <div className="ud-footer-social">
+
+          <h3>Connect With Us</h3>
+
+          <div>
+
+            <a
+              href="#"
+              aria-label="Twitter"
+              onClick={(event) => event.preventDefault()}
+            >
+              <FaTwitter className="ud-ico-desktop" />
+              <FaXTwitter className="ud-ico-phone" />
+            </a>
+
+            <a
+              href="#"
+              aria-label="LinkedIn"
+              onClick={(event) => event.preventDefault()}
+            >
+              <FaLinkedin />
+            </a>
+
+            <a
+              href="#"
+              aria-label="GitHub"
+              onClick={(event) => event.preventDefault()}
+            >
+              <FaGithub />
+            </a>
+
+          </div>
 
         </div>
 

@@ -10,6 +10,12 @@ import {
   getDiseaseVisual,
 } from "../../../data/diseaseVisuals";
 
+import "../UserDashboard.css";
+
+
+// ============================================================
+// WEEK'S UPDATE CARD
+// ============================================================
 
 export default function TodaysUpdate({
   disease,
@@ -62,85 +68,34 @@ export default function TodaysUpdate({
 
 
   return (
-    <section className="
-      h-full
-      rounded-[14px]
-      border
-      border-[#E5E2DC]
-      bg-white
-      p-[17px]
-      shadow-[0_1px_5px_rgba(44,35,24,0.035)]
-    ">
 
-      {/* HEADER */}
+    <section className="ud-card ud-update">
 
-      <div className="
-        flex
-        items-center
-        gap-2
-        pb-2
-      ">
+      <div className="ud-card-title">
 
         <CalendarDays
-          size={19}
           strokeWidth={1.8}
-          className="
-            text-[#2E9649]
-          "
+          aria-hidden="true"
         />
 
-        <h2 className="
-          text-[12px]
-          font-semibold
-          uppercase
-          tracking-[0.025em]
-          text-[#1B1D1F]
-        ">
+        <h2>
           WEEK&apos;S UPDATE
         </h2>
 
       </div>
 
 
-      {/* CONTENT */}
+      <div className="ud-update-body">
 
-      <div className="
-        grid
-        min-h-0
-        grid-cols-[1fr_125px]
-        items-center
-        gap-1
-        pt-[8px]
-      ">
+        <div className="ud-update-text">
 
-        <div className="
-          min-w-0
-        ">
-
-          <h3 className="
-            max-w-[270px]
-            text-[20px]
-            font-semibold
-            leading-[1.28]
-            tracking-[-0.02em]
-            text-[#101214]
-          ">
-
+          <h3>
             {visual.name} activity is{" "}
             {trendText} in{" "}
             {location || "your area"}.
-
           </h3>
 
-
-          <p className="
-            mt-4
-            max-w-[275px]
-            text-[13px]
-            leading-[1.8]
-            text-[#272B30]
-          ">
-
+          <p>
             {hasChange
               ? `Cases have ${
                   increasing
@@ -152,38 +107,19 @@ export default function TodaysUpdate({
                   numericChange
                 )}% compared with last week.`
               : `Current surveillance information for ${visual.name} is available for your selected area.`}
-
           </p>
-
 
           <button
             type="button"
-            onClick={
-              onViewDetails
-            }
-            className="
-              mt-4
-              inline-flex
-              items-center
-              gap-3
-              rounded-[7px]
-              border
-              border-[#57B77A]
-              bg-white
-              px-4
-              py-[9px]
-              text-[12px]
-              font-medium
-              text-[#16803C]
-              transition
-              hover:bg-[#F3FAF4]
-            "
+            className="ud-btn-outline"
+            onClick={onViewDetails}
           >
 
             View Details
 
             <ArrowRight
-              size={16}
+              strokeWidth={2}
+              aria-hidden="true"
             />
 
           </button>
@@ -191,30 +127,13 @@ export default function TodaysUpdate({
         </div>
 
 
-        {/* DISEASE IMAGE */}
-
-        <div className="
-          flex
-          h-full
-          items-center
-          justify-center
-        ">
+        <div className="ud-update-img">
 
           <DiseaseVisual
-            disease={
-              disease
-            }
-            category={
-              category
-            }
+            disease={disease}
+            category={category}
             type="update"
             alt={`${visual.name} surveillance illustration`}
-            className="
-              h-[130px]
-              w-[130px]
-              rounded-[10px]
-              object-contain
-            "
           />
 
         </div>

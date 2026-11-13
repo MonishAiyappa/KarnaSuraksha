@@ -2,82 +2,72 @@ import {
   ArrowRight,
   BarChart3,
   BellRing,
+  BriefcaseMedical,
   HeartPulse,
-  Bot,
 } from "lucide-react";
+
+import "../UserDashboard.css";
+
+
+// ============================================================
+// QUICK ACCESS CARD
+// ============================================================
+
+const ITEMS = [
+  {
+    key: "analytics",
+    page: "analytics",
+    label: "Analytics",
+    icon: BarChart3,
+    iconColor: "#1E9B52",
+    bg: "#DDF4E8",
+  },
+  {
+    key: "alerts",
+    page: "notifications",
+    label: "Emergency Alerts",
+    icon: BellRing,
+    iconColor: "#F0443C",
+    bg: "#FEEBD9",
+  },
+  {
+    key: "medical-chat",
+    page: "medical-chat",
+    label: "Medical Assistant",
+    icon: BriefcaseMedical,
+    iconColor: "#7B4DE0",
+    bg: "#E9E4FC",
+  },
+  {
+    key: "home-relief",
+    page: "home-relief",
+    label: "Home Relief",
+    icon: HeartPulse,
+    iconColor: "#F0443C",
+    bg: "#FFE5E6",
+  },
+];
 
 
 export default function QuickAccess({
   onNavigate,
 }) {
 
-  const items = [
-    {
-      key: "analytics",
-      label: "Analytics",
-      icon: BarChart3,
-      iconColor: "#2E9649",
-      bg: "#EAF7EC",
-    },
-
-    {
-      key: "alerts",
-      label: "Emergency Alerts",
-      icon: BellRing,
-      iconColor: "#F04444",
-      bg: "#FFF0DF",
-    },
-
-    {
-      key: "medical-chat",
-      label: "Medical Assistant",
-      icon: Bot,
-      iconColor: "#7B42E8",
-      bg: "#F2E9FF",
-    },
-
-    {
-      key: "home-relief",
-      label: "Home Relief",
-      icon: HeartPulse,
-      iconColor: "#F04444",
-      bg: "#FFE9E9",
-    },
-  ];
-
-
   return (
-    <section className="
-      h-full
-      rounded-[14px]
-      border
-      border-[#E5E2DC]
-      bg-white
-      p-[15px]
-      shadow-[0_1px_5px_rgba(44,35,24,0.035)]
-    ">
 
-      <h2 className="
-        text-[12px]
-        font-semibold
-        uppercase
-        tracking-[0.02em]
-        text-[#1B1D1F]
-      ">
+    <section className="ud-card ud-quick">
+
+      <h2 className="ud-quick-title">
         QUICK ACCESS
       </h2>
 
 
-      <div className="
-        mt-[10px]
-        grid
-        grid-cols-2
-        gap-[10px]
-      ">
+      <div className="ud-quick-grid">
 
-        {items.map(
+        {ITEMS.map(
           ({
             key,
+            page,
             label,
             icon: Icon,
             iconColor,
@@ -87,54 +77,34 @@ export default function QuickAccess({
             <button
               key={key}
               type="button"
-              onClick={() =>
-                onNavigate?.(
-                  key
-                )
-              }
-              className="
-                flex
-                h-[50px]
-                items-center
-                gap-3
-                rounded-[9px]
-                border
-                border-transparent
-                px-3
-                text-left
-                transition
-                hover:-translate-y-0.5
-                hover:shadow-sm
-              "
+              className="ud-quick-item"
               style={{
-                backgroundColor:
-                  bg,
+                backgroundColor: bg,
+                "--ud-quick-color": iconColor,
               }}
+              onClick={() =>
+                onNavigate?.(page)
+              }
             >
 
               <Icon
-                size={24}
+                aria-hidden="true"
+                strokeWidth={1.9}
                 style={{
-                  color:
-                    iconColor,
+                  color: iconColor,
                 }}
               />
 
-              <span className="
-                flex-1
-                text-[10px]
-                font-semibold
-                leading-4
-                text-[#1C2024]
-              ">
+              <span>
                 {label}
               </span>
 
               <ArrowRight
-                size={15}
+                className="ud-quick-arrow"
+                aria-hidden="true"
+                strokeWidth={2}
                 style={{
-                  color:
-                    iconColor,
+                  color: iconColor,
                 }}
               />
 
@@ -144,6 +114,24 @@ export default function QuickAccess({
         )}
 
       </div>
+
+
+      <button
+        type="button"
+        className="ud-quick-more"
+        onClick={() =>
+          onNavigate?.("precautions")
+        }
+      >
+
+        More
+
+        <ArrowRight
+          aria-hidden="true"
+          strokeWidth={2}
+        />
+
+      </button>
 
     </section>
   );

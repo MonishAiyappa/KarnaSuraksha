@@ -1,26 +1,39 @@
-import { useEffect, useMemo, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 import {
   ArrowRight,
   Bell,
   CalendarDays,
   ChevronDown,
+  Clock3,
+  Info,
   MapPin,
-  ShieldCheck,
+  ShieldPlus,
   Stethoscope,
   TrendingUp,
   User,
 } from "lucide-react";
 
-import { api } from "../../api";
 import { getDiseaseVisual } from "../../data/diseaseVisuals";
-import HeroBg from "../../assets/hero-bg.png";
+
+import LocationSelector from "../../components/LocationSelector";
+
 import MedicalAssistantReference from "../../assets/ui/medical-assistant-reference.png";
+
+import dashboardBanner from "../../assets/ui/user-dashboard-banner.webp";
 
 import TodaysUpdate from "./dashboard/TodaysUpdate";
 import RiskAroundYou from "./dashboard/RiskAroundYou";
 import PreventiveMeasures from "./dashboard/PreventiveMeasures";
 import QuickAccess from "./dashboard/QuickAccess";
+
+import "./UserDashboard.css";
+
 
 const RISK_ORDER = {
   Low: 0,
@@ -132,67 +145,56 @@ function getGreeting() {
 
 export default function Dashboard({
   username,
+  defaultLocation,
   selectedLocation,
   dashboardData,
   loading,
   error,
+  alertCount = 0,
   onNavigate,
   onExit,
+  onLocationChange,
+  onResetToDefault,
 }) {
+
   const [
     profileOpen,
     setProfileOpen,
   ] = useState(false);
 
   const [
-    alerts,
-    setAlerts,
-  ] = useState([]);
+    locationOpen,
+    setLocationOpen,
+  ] = useState(false);
 
-  const talukId =
-    selectedLocation?.talukId;
+  const controlsRef = useRef(null);
 
-  /*
-   * ==========================================================
-   * LOAD NOTIFICATIONS
-   * ==========================================================
-   */
 
+  // Close the small dropdowns when the user clicks anywhere else
   useEffect(() => {
-    let cancelled = false;
 
-    async function loadAlerts() {
-      if (!talukId) {
-        setAlerts([]);
-        return;
-      }
-
-      try {
-        const data =
-          await api.getNotifications(
-            Number(talukId)
-          );
-
-        if (!cancelled) {
-          setAlerts(
-            Array.isArray(data)
-              ? data
-              : []
-          );
-        }
-      } catch {
-        if (!cancelled) {
-          setAlerts([]);
-        }
-      }
+    if (!profileOpen && !locationOpen) {
+      return undefined;
     }
 
-    loadAlerts();
+    const close = (event) => {
 
-    return () => {
-      cancelled = true;
+      if (
+        controlsRef.current &&
+        !controlsRef.current.contains(event.target)
+      ) {
+        setProfileOpen(false);
+        setLocationOpen(false);
+      }
     };
-  }, [talukId]);
+
+    document.addEventListener("mousedown", close);
+
+    return () =>
+      document.removeEventListener("mousedown", close);
+
+  }, [profileOpen, locationOpen]);
+
 
   /*
    * ==========================================================
@@ -394,48 +396,25 @@ export default function Dashboard({
    */
 
   if (loading) {
-    return (
-      <div className="
-        min-h-screen
-        bg-white
-        px-8
-        py-8
-        lg:ml-[14px]
-      ">
-        <div className="
-          flex
-          min-h-[650px]
-          items-center
-          justify-center
-          rounded-[14px]
-          border
-          border-[#E7E7E2]
-          bg-white
-        ">
-          <div className="text-center">
-            <div className="
-              mx-auto
-              h-9
-              w-9
-              animate-spin
-              rounded-full
-              border-4
-              border-[#E8EEE9]
-              border-t-[#2E9649]
-            " />
 
-            <p className="
-              mt-4
-              text-[13px]
-              text-[#737A80]
-            ">
-              Loading surveillance data...
-            </p>
-          </div>
+    return (
+
+      <div className="ud-dash">
+
+        <div className="ud-state">
+
+          <div className="ud-spinner" />
+
+          <p>
+            Loading surveillance data...
+          </p>
+
         </div>
+
       </div>
     );
   }
+
 
   /*
    * ==========================================================
@@ -444,29 +423,25 @@ export default function Dashboard({
    */
 
   if (error) {
+
     return (
-      <div className="
-        min-h-screen
-        bg-white
-        px-8
-        py-8
-        lg:ml-[14px]
-      ">
-        <div className="
-          rounded-[14px]
-          border
-          border-red-200
-          bg-red-50
-          px-6
-          py-5
-          text-[13px]
-          text-red-700
-        ">
+
+      <div className="ud-dash">
+
+        <div className="ud-state ud-state-error">
           {error}
         </div>
+
       </div>
     );
   }
+
+
+  const badge =
+    alertCount > 9
+      ? "9+"
+      : alertCount;
+
 
   /*
    * ==========================================================
@@ -475,428 +450,247 @@ export default function Dashboard({
    */
 
   return (
-    <div className="
-      ml-0
-      min-h-screen
-      bg-white
-      text-[#17191C]
-      lg:ml-[14px]
-    ">
+
+    <div className="ud-dash">
 
       {/* =====================================================
-          HEADER
+          HEADER (greeting + controls)
       ===================================================== */}
 
-      <header className="
-        relative
-        h-[178px]
-        overflow-hidden
-        border-b
-        border-[#ECEBE7]
-        bg-white
-      ">
+      <header className="ud-hero">
 
         <img
-          src={HeroBg}
+          className="ud-hero-banner"
+          src={dashboardBanner}
           alt=""
           aria-hidden="true"
           draggable="false"
-          className="
-            pointer-events-none
-            absolute
-            bottom-[-35px]
-            right-[-5px]
-            h-[228px]
-            w-[720px]
-            object-cover
-            object-center
-            opacity-[0.62]
-          "
         />
 
-        <div className="
-          relative
-          z-10
-          flex
-          h-full
-          items-start
-          justify-between
-          px-8
-          pt-[30px]
-          xl:px-9
-        ">
+        <div className="ud-hero-text">
 
-          {/* =================================================
-              GREETING
-          ================================================= */}
+          <h1>
 
-          <div>
+            {getGreeting()}, {username}
 
-            <div className="
-              flex
-              items-center
-              gap-2
-            ">
+            <span
+              className="ud-wave"
+              aria-hidden="true"
+            >
+              👋
+            </span>
 
-              <h1 className="
-                text-[27px]
-                font-semibold
-                leading-none
-                tracking-[-0.035em]
-                text-[#111315]
-              ">
-                {getGreeting()}, {username}
-              </h1>
+          </h1>
 
-              <span className="text-[22px]">
-                👋
+          <p className="ud-monitoring">
+
+            <span>
+              Monitoring disease situation for
+            </span>
+
+            <span className="ud-pill">
+
+              <MapPin aria-hidden="true" />
+
+              {locationLabel(selectedLocation)}
+
+            </span>
+
+          </p>
+
+          <p className="ud-updated">
+
+            <Clock3 aria-hidden="true" />
+
+            <span>
+
+              Last updated:{" "}
+
+              {lastUpdated
+                ? `Today • ${lastUpdated}`
+                : "Live surveillance"}
+
+            </span>
+
+          </p>
+
+        </div>
+
+
+        {/* CONTROLS (laptop + tablet; on phones they live in the top bar) */}
+
+        <div
+          className="ud-controls"
+          ref={controlsRef}
+        >
+
+          <button
+            type="button"
+            className="ud-control ud-control-bell"
+            onClick={() => onNavigate?.("notifications")}
+            aria-label="Notifications"
+          >
+
+            <Bell
+              strokeWidth={1.8}
+              aria-hidden="true"
+            />
+
+            {alertCount > 0 && (
+              <span className="ud-bell-badge">
+                {badge}
               </span>
+            )}
 
-            </div>
-
-
-            <div className="
-              mt-[18px]
-              flex
-              items-center
-              gap-2
-            ">
-
-              <span className="
-                text-[12px]
-                text-[#20252A]
-              ">
-                Monitoring disease situation for
-              </span>
-
-              <span className="
-                inline-flex
-                items-center
-                gap-1.5
-                rounded-full
-                bg-[#EAF5EC]
-                px-3
-                py-[7px]
-                text-[12px]
-                font-medium
-                text-[#16803C]
-              ">
-
-                <MapPin size={13} />
-
-                {
-                  locationLabel(
-                    selectedLocation
-                  )
-                }
-
-              </span>
-
-            </div>
+          </button>
 
 
-            <div className="
-              mt-[20px]
-              flex
-              items-center
-              gap-1.5
-              text-[11px]
-              text-[#687078]
-            ">
+          <div className="ud-control-wrap">
 
-              <span className="
-                text-[15px]
-              ">
-                ◷
-              </span>
+            <button
+              type="button"
+              className="ud-control ud-control-location"
+              aria-haspopup="true"
+              aria-expanded={locationOpen}
+              onClick={() => {
+                setLocationOpen((value) => !value);
+                setProfileOpen(false);
+              }}
+            >
+
+              <MapPin
+                strokeWidth={1.8}
+                aria-hidden="true"
+              />
 
               <span>
-                Last updated:{" "}
-                {
-                  lastUpdated
-                    ? `Today • ${lastUpdated}`
-                    : "Live surveillance"
-                }
+                {locationLabel(selectedLocation)}
               </span>
 
-            </div>
+              <ChevronDown
+                className="ud-chevron"
+                aria-hidden="true"
+              />
+
+            </button>
+
+            {locationOpen && (
+
+              <div className="ud-pop ud-pop-location">
+
+                <LocationSelector
+                  value={selectedLocation}
+                  onChange={(next) => {
+
+                    onLocationChange?.(next);
+
+                    if (next?.talukId) {
+                      setLocationOpen(false);
+                    }
+                  }}
+                />
+
+                {defaultLocation?.talukId &&
+                  selectedLocation?.talukId !==
+                    defaultLocation.talukId && (
+
+                    <button
+                      type="button"
+                      className="ud-location-reset"
+                      onClick={() => {
+                        onResetToDefault?.();
+                        setLocationOpen(false);
+                      }}
+                    >
+                      Reset to My Default Location
+                    </button>
+
+                  )}
+
+              </div>
+
+            )}
 
           </div>
 
 
-          {/* =================================================
-              HEADER CONTROLS
-          ================================================= */}
+          <div className="ud-control ud-control-date">
 
-          <div className="
-            flex
-            items-start
-            gap-3
-          ">
+            <CalendarDays
+              strokeWidth={1.8}
+              aria-hidden="true"
+            />
 
-            {/* NOTIFICATIONS */}
+            <span>
+              {today}
+            </span>
 
-            <button
-              type="button"
-              onClick={() =>
-                onNavigate?.(
-                  "notifications"
-                )
-              }
-              className="
-                relative
-                flex
-                h-[45px]
-                w-[45px]
-                items-center
-                justify-center
-                rounded-[11px]
-                border
-                border-[#E3E2DE]
-                bg-white
-              "
-              aria-label="Notifications"
-            >
+            <ChevronDown
+              className="ud-chevron"
+              aria-hidden="true"
+            />
 
-              <Bell
-                size={21}
-                strokeWidth={1.8}
-              />
-
-              <span className="
-                absolute
-                -right-1
-                -top-1
-                flex
-                h-6
-                min-w-6
-                items-center
-                justify-center
-                rounded-full
-                bg-[#E3262E]
-                px-1
-                text-[10px]
-                font-semibold
-                text-white
-              ">
-                {
-                  Math.min(
-                    Math.max(
-                      alerts.length,
-                      1
-                    ),
-                    9
-                  )
-                }
-              </span>
-
-            </button>
+          </div>
 
 
-            {/* LOCATION */}
+          <div className="ud-control-wrap">
 
             <button
               type="button"
-              className="
-                hidden
-                h-[45px]
-                items-center
-                gap-2
-                rounded-[11px]
-                border
-                border-[#E3E2DE]
-                bg-white
-                px-4
-                md:flex
-              "
-              aria-label="Selected location"
+              className="ud-control ud-control-user"
+              aria-haspopup="true"
+              aria-expanded={profileOpen}
+              onClick={() => {
+                setProfileOpen((value) => !value);
+                setLocationOpen(false);
+              }}
             >
 
-              <MapPin
-                size={19}
-                strokeWidth={1.8}
-              />
-
-              <span className="
-                max-w-[150px]
-                truncate
-                text-[12px]
-                font-medium
-              ">
-                {
-                  locationLabel(
-                    selectedLocation
-                  )
-                }
-              </span>
-
-              <ChevronDown
-                size={16}
-              />
-
-            </button>
-
-
-            {/* DATE */}
-
-            <div className="
-              hidden
-              h-[45px]
-              items-center
-              gap-2
-              rounded-[11px]
-              border
-              border-[#E3E2DE]
-              bg-white
-              px-4
-              lg:flex
-            ">
-
-              <CalendarDays
-                size={19}
-                strokeWidth={1.8}
-              />
-
-              <span className="
-                whitespace-nowrap
-                text-[12px]
-                font-medium
-              ">
-                {today}
-              </span>
-
-              <ChevronDown
-                size={16}
-              />
-
-            </div>
-
-
-            {/* PROFILE */}
-
-            <div className="relative">
-
-              <button
-                type="button"
-                onClick={() =>
-                  setProfileOpen(
-                    (value) =>
-                      !value
-                  )
-                }
-                className="
-                  flex
-                  h-[45px]
-                  items-center
-                  gap-2
-                  rounded-[11px]
-                  px-1.5
-                  hover:bg-[#F7F8F6]
-                "
-                aria-label="User profile"
-              >
-
-                <span className="
-                  flex
-                  h-10
-                  w-10
-                  items-center
-                  justify-center
-                  rounded-full
-                  bg-[#F0E8DC]
-                  text-[#8B7258]
-                ">
-                  <User size={19} />
-                </span>
-
-                <span className="
-                  hidden
-                  text-left
-                  sm:block
-                ">
-
-                  <span className="
-                    block
-                    text-[12px]
-                    font-semibold
-                  ">
-                    {username}
-                  </span>
-
-                  <span className="
-                    block
-                    text-[10px]
-                    text-[#626970]
-                  ">
-                    User
-                  </span>
-
-                </span>
-
-                <ChevronDown
-                  size={15}
+              <span className="ud-avatar">
+                <User
+                  strokeWidth={1.8}
+                  aria-hidden="true"
                 />
+              </span>
 
-              </button>
+              <span className="ud-user-text">
 
+                <strong>{username}</strong>
 
-              {profileOpen && (
-                <div className="
-                  absolute
-                  right-0
-                  top-[50px]
-                  z-50
-                  w-48
-                  rounded-xl
-                  border
-                  border-[#E5DED3]
-                  bg-white
-                  p-2
-                  shadow-xl
-                ">
+                <small>User</small>
 
-                  <div className="
-                    px-3
-                    py-2
-                  ">
+              </span>
 
-                    <p className="
-                      text-[12px]
-                      font-semibold
-                    ">
-                      {username}
-                    </p>
+              <ChevronDown
+                className="ud-chevron"
+                aria-hidden="true"
+              />
 
-                    <p className="
-                      text-[10px]
-                      text-[#737A80]
-                    ">
-                      User
-                    </p>
+            </button>
 
-                  </div>
+            {profileOpen && (
 
-                  <button
-                    type="button"
-                    onClick={onExit}
-                    className="
-                      w-full
-                      rounded-lg
-                      px-3
-                      py-2
-                      text-left
-                      text-[12px]
-                      text-[#C62828]
-                      hover:bg-red-50
-                    "
-                  >
-                    Logout
-                  </button>
+              <div className="ud-pop ud-pop-user">
+
+                <div className="ud-pop-user-info">
+
+                  <strong>{username}</strong>
+
+                  <small>User</small>
 
                 </div>
-              )}
 
-            </div>
+                <button
+                  type="button"
+                  className="ud-pop-logout"
+                  onClick={onExit}
+                >
+                  Logout
+                </button>
+
+              </div>
+
+            )}
 
           </div>
 
@@ -906,664 +700,337 @@ export default function Dashboard({
 
 
       {/* =====================================================
-          MAIN CONTENT
+          CONTENT
       ===================================================== */}
 
-      <main className="
-        px-8
-        py-[18px]
-        xl:px-8
-      ">
-
-        <div className="
-          mx-auto
-          max-w-[1515px]
-        ">
-
-          {/* =================================================
-              CURRENT HEALTH SITUATION
-          ================================================= */}
-
-          <section className="
-            h-[181px]
-            rounded-[14px]
-            border
-            border-[#E5E2DC]
-            bg-white
-            px-[22px]
-            py-[16px]
-            shadow-[0_1px_5px_rgba(44,35,24,0.035)]
-          ">
-
-            <p className="
-              text-[11px]
-              font-semibold
-              uppercase
-              tracking-[0.02em]
-              text-[#263D57]
-            ">
-              CURRENT HEALTH SITUATION
-            </p>
+      <div className="ud-content">
 
 
-            <div className="
-              mt-[11px]
-              grid
-              h-[125px]
-              grid-cols-1
-              md:grid-cols-2
-              xl:grid-cols-[0.82fr_0.65fr_0.82fr_0.65fr]
-            ">
+        {/* ---------------------------------------------------
+            CURRENT HEALTH SITUATION
+        --------------------------------------------------- */}
 
-              {/* =================================================
-                  RISK
-              ================================================= */}
+        <section className="ud-card ud-situation">
 
-              <div className="
-                flex
-                items-center
-                gap-4
-                border-b
-                border-[#EEE9E1]
-                py-2
-                xl:border-b-0
-                xl:border-r
-                xl:pr-7
-              ">
+          <p className="ud-label">
+            CURRENT HEALTH SITUATION
+          </p>
 
-                <div
-                  className="
-                    flex
-                    h-[76px]
-                    w-[76px]
-                    shrink-0
-                    items-center
-                    justify-center
-                    rounded-full
-                  "
-                  style={{
-                    backgroundColor:
-                      tone.icon,
-                  }}
-                >
+          <div className="ud-sit-grid">
 
-                  <ShieldCheck
-                    size={38}
-                    strokeWidth={1.8}
-                    style={{
-                      color:
-                        tone.text,
-                    }}
-                  />
+            {/* RISK */}
 
-                </div>
+            <div className="ud-sit-cell ud-sit-risk">
 
-
-                <div>
-
-                  <p
-                    className="
-                      text-[24px]
-                      font-semibold
-                      leading-none
-                    "
-                    style={{
-                      color:
-                        tone.text,
-                    }}
-                  >
-                    {risk} Risk
-                  </p>
-
-                  <p className="
-                    mt-2
-                    max-w-[250px]
-                    text-[11px]
-                    leading-5
-                    text-[#353B40]
-                  ">
-                    Disease activity is{" "}
-                    {
-                      risk === "Low"
-                        ? "low"
-                        : "elevated"
-                    }{" "}
-                    in your monitored area.
-                    <br />
-                    Stay cautious.
-                  </p>
-
-                </div>
-
+              <div
+                className="ud-sit-shield"
+                style={{
+                  backgroundColor: tone.icon,
+                  color: tone.text,
+                }}
+              >
+                <ShieldPlus
+                  strokeWidth={1.8}
+                  aria-hidden="true"
+                />
               </div>
 
-
-              {/* =================================================
-                  ACTIVE CASES
-              ================================================= */}
-
-              <div className="
-                border-b
-                border-[#EEE9E1]
-                py-3
-                md:pl-7
-                xl:border-b-0
-                xl:border-r
-                xl:py-2
-              ">
-
-                <p className="
-                  text-[28px]
-                  font-medium
-                  leading-none
-                ">
-                  {
-                    Number(
-                      totalCases || 0
-                    ).toLocaleString(
-                      "en-IN"
-                    )
-                  }
-                </p>
-
-                <p className="
-                  mt-2
-                  text-[12px]
-                  font-semibold
-                ">
-                  Active Cases
-                </p>
-
-                <p className="
-                  mt-1
-                  text-[10px]
-                  text-[#626970]
-                ">
-                  Total Reported
-                </p>
+              <div className="ud-sit-text">
 
                 <p
-                  className={`
-                    mt-3
-                    text-[10px]
-                    font-medium
-                    ${
-                      weeklyChange > 0
-                        ? "text-[#F04444]"
-                        : weeklyChange < 0
-                          ? "text-[#16803C]"
-                          : "text-[#737A80]"
-                    }
-                  `}
+                  className="ud-sit-risk-name"
+                  style={{
+                    color: tone.text,
+                  }}
                 >
+                  {risk} Risk
+                </p>
 
-                  {
-                    weeklyChange === null
-                      ? "No trend data"
-                      : `${
-                          weeklyChange >= 0
-                            ? "↗"
-                            : "↘"
-                        } ${
-                          Math.abs(
-                            weeklyChange
-                          )
-                        }% from last week`
-                  }
+                <p className="ud-sit-desc">
 
+                  Disease activity is{" "}
+                  {risk === "Low"
+                    ? "low"
+                    : "elevated"}{" "}
+                  in your monitored area.
+
+                </p>
+
+                <p className="ud-sit-desc">
+                  Stay cautious.
                 </p>
 
               </div>
 
-
-              {/* =================================================
-                  HIGHEST-RISK DISEASE
-              ================================================= */}
-
-              <div className="
-                border-b
-                border-[#EEE9E1]
-                py-3
-                md:pl-7
-                xl:border-b-0
-                xl:border-r
-                xl:py-2
-              ">
-
-                <div className="
-                  flex
-                  items-center
-                  gap-4
-                ">
-
-                  <div className="
-                    flex
-                    h-[68px]
-                    w-[68px]
-                    shrink-0
-                    items-center
-                    justify-center
-                    overflow-hidden
-                    rounded-[18px]
-                    bg-[#EFF7F0]
-                  ">
-
-                    <img
-                      src={
-                        visual.diseaseImage
-                      }
-                      alt=""
-                      draggable="false"
-                      className="
-                        h-[58px]
-                        w-[58px]
-                        object-contain
-                      "
-                    />
-
-                  </div>
-
-
-                  <div className="min-w-0">
-
-                    <p className="
-                      truncate
-                      text-[22px]
-                      font-semibold
-                      leading-none
-                    ">
-                      {
-                        riskDisease ||
-                        "No active disease"
-                      }
-                    </p>
-
-                    <p className="
-                      mt-2
-                      text-[10px]
-                      text-[#626970]
-                    ">
-                      Highest Locality Risk
-                    </p>
-
-                    <p className="
-                      mt-2
-                      text-[10px]
-                      font-semibold
-                      text-[#16803C]
-                    ">
-                      {
-                        riskDiseaseCard
-                          ? `${riskDiseaseCard.cases} cases`
-                          : "No cases"
-                      }
-                    </p>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-
-              {/* =================================================
-                  WEEKLY TREND
-              ================================================= */}
-
-              <div className="
-                py-3
-                md:pl-7
-                xl:py-2
-              ">
-
-                <div className="
-                  flex
-                  items-center
-                  gap-4
-                ">
-
-                  <div className="
-                    flex
-                    h-[68px]
-                    w-[68px]
-                    shrink-0
-                    items-center
-                    justify-center
-                    rounded-full
-                    bg-[#EDF4FD]
-                  ">
-
-                    <TrendingUp
-                      size={29}
-                      strokeWidth={1.8}
-                      className="
-                        text-[#1769D2]
-                      "
-                    />
-
-                  </div>
-
-
-                  <div>
-
-                    <p className="
-                      text-[24px]
-                      font-semibold
-                      leading-none
-                    ">
-                      {
-                        weeklyChange === null
-                          ? "—"
-                          : `${
-                              weeklyChange >= 0
-                                ? "+"
-                                : ""
-                            }${
-                              weeklyChange
-                            }%`
-                      }
-                    </p>
-
-                    <p className="
-                      mt-2
-                      text-[10px]
-                      text-[#626970]
-                    ">
-                      Weekly Trend
-                    </p>
-
-                    <p className="
-                      mt-1
-                      text-[10px]
-                      text-[#626970]
-                    ">
-                      vs Last Week
-                    </p>
-
-                    <span className="
-                      mt-2
-                      inline-flex
-                      rounded-[6px]
-                      bg-[#EDF4FD]
-                      px-3
-                      py-1
-                      text-[9px]
-                      font-medium
-                      text-[#1769D2]
-                    ">
-                      {trendLabel}
-                    </span>
-
-                  </div>
-
-                </div>
-
-              </div>
-
             </div>
 
-          </section>
 
+            {/* ACTIVE CASES */}
 
-          {/* =================================================
-              THREE MAIN CARDS
-          ================================================= */}
+            <div className="ud-sit-cell ud-sit-cases">
 
-          <section className="
-            mt-[14px]
-            grid
-            min-h-0
-            grid-cols-1
-            gap-[14px]
-            xl:h-[312px]
-            xl:grid-cols-[0.79fr_0.94fr_1fr]
-            xl:grid-rows-[312px]
-          ">
+              <p className="ud-sit-number">
+                {Number(totalCases || 0).toLocaleString("en-IN")}
+              </p>
 
-            {/* WEEK'S UPDATE */}
+              <p className="ud-sit-title">
+                Active Cases
+              </p>
 
-            <div className="
-              min-h-0
-              h-full
-              overflow-hidden
-            ">
+              <p className="ud-sit-sub">
+                Total Reported
+              </p>
 
-              <TodaysUpdate
-                disease={
-                  riskDisease
-                }
-                category={
-                  diseaseCategory
-                }
-                location={
-                  selectedLocation?.talukName ||
-                  selectedLocation?.districtName
-                }
-                trend={
+              <p
+                className={`ud-sit-change ${
                   weeklyChange > 0
-                    ? "increasing"
+                    ? "is-up"
                     : weeklyChange < 0
-                      ? "decreasing"
-                      : "stable"
-                }
-                percentageChange={
-                  weeklyChange
-                }
-                onViewDetails={() =>
-                  onNavigate?.(
-                    "analytics"
-                  )
-                }
-              />
+                      ? "is-down"
+                      : "is-flat"
+                }`}
+              >
+
+                {weeklyChange === null
+                  ? "No trend data"
+                  : `${
+                      weeklyChange >= 0
+                        ? "↑"
+                        : "↓"
+                    } ${Math.abs(
+                      weeklyChange
+                    )}% from last week`}
+
+              </p>
 
             </div>
 
 
-            {/* RISK AROUND YOU */}
+            {/* HIGHEST-RISK DISEASE */}
 
-            <div className="
-              min-h-0
-              h-full
-              overflow-hidden
-            ">
+            <div className="ud-sit-cell ud-sit-disease">
 
-              <RiskAroundYou
-                taluk={
-                  selectedLocation
-                }
-                risk={
-                  risk
-                }
-                onViewMap={() =>
-                  onNavigate?.(
-                    "risk-map"
-                  )
-                }
-              />
+              <div className="ud-sit-disease-img">
 
-            </div>
-
-
-            {/* MEDICAL ASSISTANT */}
-
-            <section className="
-              relative
-              min-h-0
-              h-full
-              overflow-hidden
-              rounded-[14px]
-              border
-              border-[#E5E2DC]
-              bg-[#F5FBF8]
-              shadow-[0_1px_5px_rgba(44,35,24,0.035)]
-            ">
-
-              <div className="relative h-full w-full overflow-hidden px-[24px] pt-[20px]">
-
-                {/* HEADER */}
-                <div className="relative z-20 flex items-center gap-[10px]">
-                  <div className="flex h-[39px] w-[39px] shrink-0 items-center justify-center rounded-full bg-[#E5F5EF]">
-                    <Stethoscope
-                      size={22}
-                      strokeWidth={1.8}
-                      className="text-[#15956D]"
-                    />
-                  </div>
-
-                  <h2 className="text-[16px] font-semibold tracking-[-0.02em] text-[#173042]">
-                    Medical Assistant
-                  </h2>
-                </div>
-
-                {/* CONTENT */}
-                <div className="relative z-20 mt-[21px] max-w-[250px]">
-                  <h3 className="text-[23px] font-semibold leading-[1.18] tracking-[-0.03em] text-[#163245]">
-                    Need Health Guidance?
-                  </h3>
-
-                  <p className="mt-[13px] text-[13px] leading-[1.65] text-[#536A79]">
-                    Get instant guidance, preventive tips and health information from our Medical Assistant.
-                  </p>
-
-                  <button
-                    type="button"
-                    onClick={() => onNavigate?.("medical-chat")}
-                    className="mt-[20px] inline-flex h-[45px] items-center gap-[12px] rounded-[7px] border border-[#1FA56F] bg-white px-[18px] text-[14px] font-semibold text-[#15965F] transition hover:bg-[#F2FBF6]"
-                  >
-                    <ShieldCheck
-                      size={20}
-                      strokeWidth={1.8}
-                    />
-                    <span>Click Here</span>
-                    <ArrowRight
-                      size={17}
-                      strokeWidth={1.8}
-                    />
-                  </button>
-                </div>
-
-                {/* REFERENCE ILLUSTRATION — IMAGE IS CLICKABLE */}
-                <button
-                  type="button"
-                  aria-label="Open Medical Assistant"
-                  onClick={() => onNavigate?.("medical-chat")}
-                  className="absolute bottom-[-2px] right-[-2px] z-10 h-[255px] w-[255px] cursor-pointer border-0 bg-transparent p-0"
-                >
-                  <img
-                    src={MedicalAssistantReference}
-                    alt="Medical Assistant"
-                    draggable="false"
-                    className="h-full w-full object-contain object-right-bottom"
-                  />
-                </button>
+                <img
+                  src={visual.diseaseImage}
+                  alt=""
+                  draggable="false"
+                />
 
               </div>
 
-            </section>
+              <div className="ud-sit-text">
 
-          </section>
+                <p className="ud-sit-disease-name">
+                  {riskDisease || "No active disease"}
+                </p>
 
-          {/* =================================================
-              PRECAUTION + QUICK ACCESS
-          ================================================= */}
+                <p className="ud-sit-sub">
+                  Highest Locality Risk
+                </p>
 
-          <section className="
-            mt-[14px]
-            grid
-            grid-cols-1
-            gap-[14px]
-            xl:h-[168px]
-            xl:grid-cols-[1.52fr_1fr]
-          ">
+                <p className="ud-sit-cases-count">
+                  {riskDiseaseCard
+                    ? `${riskDiseaseCard.cases} cases`
+                    : "No cases"}
+                </p>
 
-            <PreventiveMeasures
-              disease={
-                riskDisease
-              }
-              category={
-                diseaseCategory
-              }
-              onMorePrecautions={() =>
-                onNavigate?.(
-                  "precautions"
-                )
-              }
-            />
+              </div>
 
-            <QuickAccess
-              onNavigate={
-                onNavigate
-              }
-            />
-
-          </section>
+            </div>
 
 
-          {/* =================================================
-              SAFETY BAR
-          ================================================= */}
+            {/* WEEKLY TREND */}
 
-          <div className="
-            mt-[14px]
-            flex
-            min-h-[39px]
-            items-center
-            gap-3
-            rounded-[9px]
-            border
-            border-[#E5E2DC]
-            bg-white
-            px-4
-            text-[10px]
-            text-[#4E565C]
-          ">
+            <div className="ud-sit-cell ud-sit-trend">
 
-            <span className="
-              flex
-              h-5
-              w-5
-              items-center
-              justify-center
-              rounded-full
-              border
-              border-[#7A8084]
-              text-[11px]
-            ">
-              i
-            </span>
+              <div className="ud-sit-trend-icon">
+                <TrendingUp
+                  strokeWidth={2}
+                  aria-hidden="true"
+                />
+              </div>
 
-            <span>
-              Stay safe, stay informed.
-              Follow precautions and protect
-              yourself and your loved ones.
-            </span>
+              <div className="ud-sit-text">
 
-            <button
-              type="button"
-              onClick={() =>
-                onNavigate?.(
-                  "precautions"
-                )
-              }
-              className="
-                ml-auto
-                inline-flex
-                items-center
-                gap-1
-                font-medium
-                text-[#16803C]
-                hover:underline
-              "
-            >
-              More
-              <ArrowRight size={13} />
-            </button>
+                <p className="ud-sit-trend-value">
+                  {weeklyChange === null
+                    ? "—"
+                    : `${
+                        weeklyChange >= 0
+                          ? "+"
+                          : ""
+                      }${weeklyChange}%`}
+                </p>
+
+                <p className="ud-sit-title">
+                  Weekly Trend
+                </p>
+
+                <p className="ud-sit-sub">
+                  vs Last Week
+                </p>
+
+                <span className="ud-chip">
+                  {trendLabel}
+                </span>
+
+              </div>
+
+            </div>
 
           </div>
 
+        </section>
+
+
+        {/* ---------------------------------------------------
+            WEEK'S UPDATE | RISK AROUND YOU | MEDICAL ASSISTANT
+        --------------------------------------------------- */}
+
+        <section className="ud-row2">
+
+          <TodaysUpdate
+            disease={riskDisease}
+            category={diseaseCategory}
+            location={
+              selectedLocation?.talukName ||
+              selectedLocation?.districtName
+            }
+            trend={
+              weeklyChange > 0
+                ? "increasing"
+                : weeklyChange < 0
+                  ? "decreasing"
+                  : "stable"
+            }
+            percentageChange={weeklyChange}
+            onViewDetails={() =>
+              onNavigate?.("analytics")
+            }
+          />
+
+          <RiskAroundYou
+            taluk={selectedLocation}
+            risk={risk}
+            onViewMap={() =>
+              onNavigate?.("risk-map")
+            }
+          />
+
+          <section className="ud-card ud-medical">
+
+            <div className="ud-medical-text">
+
+              <div className="ud-card-title ud-medical-title">
+
+                <span
+                  className="ud-medical-icon"
+                  aria-hidden="true"
+                >
+                  <Stethoscope strokeWidth={1.8} />
+                </span>
+
+                <h2>
+                  Medical Assistant
+                </h2>
+
+              </div>
+
+              <h3>
+                Need Health Guidance?
+              </h3>
+
+              <p>
+                Get instant guidance, preventive tips and
+                health information from our Medical
+                Assistant.
+              </p>
+
+              <button
+                type="button"
+                className="ud-btn-outline ud-medical-btn"
+                onClick={() =>
+                  onNavigate?.("medical-chat")
+                }
+              >
+
+                <ShieldPlus
+                  strokeWidth={1.8}
+                  aria-hidden="true"
+                />
+
+                <span>Click Here</span>
+
+                <ArrowRight
+                  strokeWidth={2}
+                  aria-hidden="true"
+                />
+
+              </button>
+
+            </div>
+
+            <button
+              type="button"
+              className="ud-medical-art"
+              aria-label="Open Medical Assistant"
+              onClick={() =>
+                onNavigate?.("medical-chat")
+              }
+            >
+
+              <img
+                src={MedicalAssistantReference}
+                alt="Medical Assistant"
+                draggable="false"
+              />
+
+            </button>
+
+          </section>
+
+        </section>
+
+
+        {/* ---------------------------------------------------
+            PRECAUTION OF THE WEEK | QUICK ACCESS
+        --------------------------------------------------- */}
+
+        <section className="ud-row3">
+
+          <PreventiveMeasures
+            disease={riskDisease}
+            category={diseaseCategory}
+            onMorePrecautions={() =>
+              onNavigate?.("precautions")
+            }
+          />
+
+          <QuickAccess
+            onNavigate={onNavigate}
+          />
+
+        </section>
+
+
+        {/* ---------------------------------------------------
+            INFO BAR
+        --------------------------------------------------- */}
+
+        <div className="ud-info">
+
+          <Info aria-hidden="true" />
+
+          <span>
+            Stay safe, stay informed. Follow precautions
+            and protect yourself and your loved ones.
+          </span>
+
         </div>
 
-      </main>
+      </div>
 
     </div>
   );

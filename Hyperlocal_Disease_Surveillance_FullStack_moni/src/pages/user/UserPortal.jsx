@@ -11,8 +11,9 @@ import {
   api,
 } from "../../api";
 
-import UserSidebar
-  from "./UserSidebar";
+import UserSidebar, {
+  UserPhoneBar,
+} from "./UserSidebar";
 
 import UserTopHeader
   from "./UserTopHeader";
@@ -46,6 +47,11 @@ import DiseaseDistribution
 
 import PrecautionarySection
   from "./dashboard/PrecautionarySection";
+
+import PortalFooter
+  from "./dashboard/Footer";
+
+import "./UserDashboard.css";
 
 
 export default function UserPortal({
@@ -127,6 +133,75 @@ export default function UserPortal({
 
   }, [
     defaultLocation,
+    selectedLocation?.talukId,
+  ]);
+
+
+  /*
+   * ==========================================================
+   * PHONE MENU + NOTIFICATION COUNT
+   * (the bell with its red number is shown in the dashboard
+   * header on laptop/tablet and in the top bar on phones)
+   * ==========================================================
+   */
+
+  const [
+    menuOpen,
+    setMenuOpen,
+  ] = useState(false);
+
+  const [
+    alertCount,
+    setAlertCount,
+  ] = useState(0);
+
+
+  useEffect(() => {
+
+    if (
+      !selectedLocation?.talukId
+    ) {
+      setAlertCount(0);
+      return undefined;
+    }
+
+    let cancelled = false;
+
+    async function loadAlertCount() {
+
+      try {
+
+        const data =
+          await api.getNotifications(
+            Number(
+              selectedLocation.talukId
+            )
+          );
+
+        if (!cancelled) {
+
+          setAlertCount(
+            Array.isArray(data)
+              ? data.length
+              : 0
+          );
+        }
+
+      } catch {
+
+        if (!cancelled) {
+          setAlertCount(0);
+        }
+      }
+    }
+
+    loadAlertCount();
+
+    return () => {
+      cancelled = true;
+    };
+
+  }, [
     selectedLocation?.talukId,
   ]);
 
@@ -229,6 +304,8 @@ export default function UserPortal({
     if (!page) {
       return;
     }
+
+    setMenuOpen(false);
 
 
     /*
@@ -454,13 +531,9 @@ export default function UserPortal({
 
   return (
 
-    <div
-      className="
-        min-h-screen
-        bg-[#FCFAF6]
-        text-[#1F3144]
-      "
-    >
+    <div className="ud-shell">
+
+      <div className="ud-body">
 
       {/* =====================================================
           SIDEBAR
@@ -495,20 +568,28 @@ export default function UserPortal({
         onResetToDefault={
           resetToDefault
         }
-
+        menuOpen={menuOpen}
+        onCloseMenu={() => setMenuOpen(false)}
       />
+
+      <div className="ud-column">
+
+        <UserPhoneBar
+          username={username}
+          onNavigate={handleNavigate}
+          menuOpen={menuOpen}
+          onToggleMenu={() =>
+            setMenuOpen((value) => !value)
+          }
+        />
+
 
 
       {/* =====================================================
           MAIN CONTENT
       ===================================================== */}
 
-      <main
-        className="
-          min-h-screen
-          lg:ml-[248px]
-        "
-      >
+      <main className="ud-main">
 
         {/* ===================================================
             HOME RELIEF HEADER
@@ -578,6 +659,9 @@ export default function UserPortal({
             onExit={
               onExit
             }
+            alertCount={alertCount}
+            onLocationChange={handleLocationChange}
+            onResetToDefault={resetToDefault}
 
           />
 
@@ -955,8 +1039,12 @@ export default function UserPortal({
 
       </main>
 
+      </div>
+
+      </div>
+
+      <PortalFooter />
+
     </div>
-
   );
-
-} 
+}

@@ -10,6 +10,12 @@ import {
   getPreventionVisual,
 } from "../../../data/diseaseVisuals";
 
+import "../UserDashboard.css";
+
+
+// ============================================================
+// PRECAUTION OF THE WEEK CARD
+// ============================================================
 
 export default function PreventiveMeasures({
   disease,
@@ -25,103 +31,43 @@ export default function PreventiveMeasures({
 
 
   return (
-    <section className="
-      relative
-      h-full
-      overflow-hidden
-      rounded-[14px]
-      border
-      border-[#DDEBDD]
-      bg-[#F1F8F1]
-      px-[20px]
-      py-[15px]
-      shadow-[0_1px_5px_rgba(0,0,0,0.03)]
-    ">
 
-      {/* TEXT */}
+    <section className="ud-card ud-prevent">
 
-      <div className="
-        relative
-        z-10
-        max-w-[56%]
-      ">
+      <div className="ud-prevent-text">
 
-        <div className="
-          flex
-          items-center
-          gap-2
-        ">
+        <div className="ud-card-title">
 
           <ShieldCheck
-            size={19}
-            className="
-              text-[#16803C]
-            "
+            strokeWidth={2}
+            aria-hidden="true"
           />
 
-          <p className="
-            text-[12px]
-            font-semibold
-            uppercase
-            tracking-[0.025em]
-            text-[#16803C]
-          ">
+          <h2>
             PRECAUTION OF THE WEEK
-          </p>
+          </h2>
 
         </div>
 
-
-        <h2 className="
-          mt-[11px]
-          max-w-[470px]
-          text-[18px]
-          font-semibold
-          leading-[1.25]
-          text-[#121617]
-        ">
+        <h3>
           {visual.preventionTitle}
-        </h2>
+        </h3>
 
-
-        <p className="
-          mt-1
-          max-w-[480px]
-          text-[12px]
-          leading-[1.55]
-          text-[#3E4840]
-        ">
+        <p>
           {visual.preventionDescription}
         </p>
 
-
         <button
           type="button"
-          onClick={
-            onMorePrecautions
-          }
-          className="
-            mt-[10px]
-            inline-flex
-            items-center
-            gap-3
-            rounded-[7px]
-            bg-[#169447]
-            px-[17px]
-            py-[8px]
-            text-[12px]
-            font-medium
-            text-white
-            shadow-sm
-            transition
-            hover:bg-[#247E3B]
-          "
+          className="ud-btn-solid"
+          onClick={onMorePrecautions}
         >
 
           More Precautions
 
           <ArrowRight
-            size={15}
+            strokeWidth={2}
+            aria-hidden="true"
           />
 
         </button>
@@ -129,27 +75,16 @@ export default function PreventiveMeasures({
       </div>
 
 
-      {/* PREVENTION IMAGE */}
+      <div className="ud-prevent-img">
 
-      <DiseaseVisual
-        disease={
-          disease
-        }
-        category={
-          category
-        }
-        type="prevention"
-        alt={`${visual.name} prevention illustration`}
-        className="
-          pointer-events-none
-          absolute
-          bottom-[-8px]
-          right-[3%]
-          h-[174px]
-          w-[350px]
-          object-contain
-        "
-      />
+        <DiseaseVisual
+          disease={disease}
+          category={category}
+          type="prevention"
+          alt={`${visual.name} prevention illustration`}
+        />
+
+      </div>
 
     </section>
   );
