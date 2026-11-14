@@ -1017,9 +1017,12 @@ export default function UserPortal({
             className="
               min-h-screen
               bg-white
-              px-[28px]
-              pb-[30px]
-              pt-[26px]
+              px-3
+              pb-6
+              pt-3
+              md:px-[28px]
+              md:pb-[30px]
+              md:pt-[26px]
               lg:pr-[48px]
             "
           >

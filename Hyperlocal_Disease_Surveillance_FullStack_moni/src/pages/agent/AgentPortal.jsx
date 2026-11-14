@@ -6,6 +6,7 @@ import {
   Bell,
   CalendarDays,
   CheckCircle2,
+  ChevronRight,
   Clock3,
   FileText,
   History as HistoryIcon,
@@ -842,71 +843,74 @@ function DashboardView({
             {talukName}
           </p>
 
-          <div className="agent-cycle">
+          <div className="agent-hero-cards-row">
 
-            <div className="agent-cycle-icon">
-              <CalendarDays
-                size={22}
-              />
+            <div className="agent-cycle">
+
+              <div className="agent-cycle-icon">
+                <CalendarDays
+                  size={20}
+                />
+              </div>
+
+              <div>
+
+                <strong>
+                  Current Surveillance
+                  Cycle
+                </strong>
+
+                <span>
+                  Week{" "}
+                  {weekNumber ??
+                    "—"}{" "}
+                  <b>•</b>{" "}
+                  {cycleDates}
+                </span>
+
+              </div>
+
             </div>
 
-            <div>
+            <div className="agent-assignment-card">
 
-              <strong>
-                Current Surveillance
-                Cycle
-              </strong>
+              <div className="agent-assignment-icon">
+                <MapPin size={20} />
+              </div>
 
-              <span>
-                Week{" "}
-                {weekNumber ??
-                  "—"}{" "}
-                <b>•</b>{" "}
-                {cycleDates}
-              </span>
+              <div>
 
-            </div>
+                <strong>
+                  Assigned Location
+                </strong>
 
-          </div>
+                <div>
+                  <span>Taluk</span>
+                  <b>:</b>
+                  <em>
+                    {talukName}
+                  </em>
+                </div>
 
-        </div>
+                <div>
+                  <span>District</span>
+                  <b>:</b>
+                  <em>
+                    {districtName}
+                  </em>
+                </div>
 
+                <div>
+                  <span>Role</span>
+                  <b>:</b>
+                  <em>
+                    Field Surveillance
+                    Agent
+                  </em>
+                </div>
 
-        <div className="agent-assignment-card">
+              </div>
 
-          <div className="agent-assignment-icon">
-            <MapPin size={22} />
-          </div>
-
-          <div>
-
-            <strong>
-              Assigned Location
-            </strong>
-
-            <div>
-              <span>Taluk</span>
-              <b>:</b>
-              <em>
-                {talukName}
-              </em>
-            </div>
-
-            <div>
-              <span>District</span>
-              <b>:</b>
-              <em>
-                {districtName}
-              </em>
-            </div>
-
-            <div>
-              <span>Role</span>
-              <b>:</b>
-              <em>
-                Field Surveillance
-                Agent
-              </em>
             </div>
 
           </div>
@@ -1442,7 +1446,7 @@ function QuickAction({
 
       </div>
 
-      <ArrowRight
+      <ChevronRight
         size={22}
         className="agent-quick-arrow"
       />

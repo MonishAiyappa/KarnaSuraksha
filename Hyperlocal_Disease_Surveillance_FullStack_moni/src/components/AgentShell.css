@@ -69,7 +69,7 @@
 
   gap: 12px;
 
-  padding: 0 32px;
+  padding: 0 24px;
 
   box-sizing: border-box;
 
@@ -78,68 +78,14 @@
 }
 
 
-.agent-brand-mark {
-  position: relative;
+.agent-brand-logo {
+  width: 44px;
 
-  width: 42px;
+  height: 44px;
 
-  height: 48px;
+  object-fit: contain;
 
-  flex: 0 0 auto;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  clip-path: polygon(
-    50% 0%,
-    91% 15%,
-    88% 65%,
-    50% 100%,
-    12% 65%,
-    9% 15%
-  );
-
-  background: #16854b;
-}
-
-
-.agent-brand-mark::after {
-  content: "";
-
-  position: absolute;
-
-  inset: 4px;
-
-  clip-path: polygon(
-    50% 0%,
-    91% 15%,
-    88% 65%,
-    50% 100%,
-    12% 65%,
-    9% 15%
-  );
-
-  background: #fff;
-}
-
-
-.agent-brand-cross {
-  position: relative;
-
-  z-index: 2;
-
-  color: #16854b;
-
-  font-size: 25px;
-
-  line-height: 1;
-
-  font-weight: 800;
-
-  transform: translateY(-1px);
+  flex: none;
 }
 
 
@@ -149,13 +95,13 @@
 
 
 .agent-brand-name {
-  color: #0a2635;
+  color: #087a32;
 
-  font-size: 18px;
+  font-size: 17px;
 
-  line-height: 1.05;
+  line-height: 1.1;
 
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
 
   font-weight: 800;
 
@@ -164,13 +110,13 @@
 
 
 .agent-brand-subtitle {
-  margin-top: 4px;
+  margin-top: 2px;
 
-  color: #26485a;
+  color: #475569;
 
-  font-size: 11px;
+  font-size: 10.5px;
 
-  line-height: 1;
+  line-height: 1.2;
 
   white-space: nowrap;
 }
@@ -301,9 +247,9 @@
 
   border-radius: 50%;
 
-  background: #eef3f1;
+  background: #fdeedc;
 
-  border: 1px solid #dce5e0;
+  border: 1px solid #f9d8b4;
 
   display: flex;
 
@@ -311,11 +257,9 @@
 
   justify-content: center;
 
-  color: #2f6171;
+  color: #c0772c;
 
-  font-size: 14px;
-
-  font-weight: 700;
+  flex: none;
 }
 
 
@@ -761,27 +705,213 @@
   background: #fbfbf8;
 
   box-sizing: border-box;
+
+  display: flex;
+
+  flex-direction: column;
 }
 
 
 .agent-main-inner {
+  flex: 1;
+
   max-width: 1536px;
+
+  width: 100%;
 
   margin: 0 auto;
 
-  padding:
-    19px 25px 30px;
+  padding: 19px 25px 30px;
 
   box-sizing: border-box;
 }
 
 
 /* ============================================================
-   MOBILE
+   MOBILE ELEMENTS
 ============================================================ */
 
 .agent-mobile-menu,
-.agent-mobile-backdrop {
+.agent-mobile-backdrop,
+.agent-phone-divider {
+  display: none;
+}
+
+
+/* ============================================================
+   AGENT FOOTER (Matches project footer on desktop & mobile)
+============================================================ */
+
+.agent-footer {
+  flex: none;
+
+  background: linear-gradient(180deg, #06493c 0%, #043d33 100%);
+
+  color: #fff;
+
+  border-top: 1px solid #14594c;
+
+  padding: 16px 28px;
+
+  box-sizing: border-box;
+}
+
+
+.agent-footer-inner {
+  max-width: 1536px;
+
+  margin: 0 auto;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 24px;
+}
+
+
+.agent-footer-brand {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+.agent-footer-brand img {
+  width: 44px;
+
+  height: 44px;
+
+  object-fit: contain;
+
+  flex: none;
+}
+
+
+.agent-footer-brand strong {
+  display: block;
+
+  font-size: 15px;
+
+  line-height: 1.2;
+
+  font-weight: 700;
+}
+
+
+.agent-footer-brand small {
+  display: block;
+
+  margin-top: 2px;
+
+  font-size: 11px;
+
+  line-height: 1.25;
+
+  color: #cfe3de;
+}
+
+
+.agent-footer-pillars {
+  display: flex;
+
+  align-items: center;
+
+  gap: 28px;
+
+  list-style: none;
+
+  margin: 0;
+
+  padding: 0;
+}
+
+
+.agent-footer-pillars li {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  font-size: 12.5px;
+
+  font-weight: 600;
+
+  color: #e2f0ec;
+}
+
+
+.agent-footer-copy {
+  margin: 0;
+
+  font-size: 12px;
+
+  color: #cfe3de;
+
+  text-align: center;
+}
+
+
+.agent-footer-social {
+  text-align: right;
+}
+
+
+.agent-footer-social h3 {
+  margin: 0 0 6px;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+
+.agent-footer-social div {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 8px;
+}
+
+
+.agent-footer-social a {
+  display: grid;
+
+  place-items: center;
+
+  width: 28px;
+
+  height: 28px;
+
+  border-radius: 50%;
+
+  background: #fff;
+
+  color: #05382f;
+
+  transition: transform 0.15s ease;
+}
+
+
+.agent-footer-social a:hover {
+  transform: scale(1.08);
+}
+
+
+.agent-ico-desktop {
+  display: block;
+}
+
+
+.agent-ico-phone {
   display: none;
 }
 
@@ -804,53 +934,115 @@
     padding-left: 245px;
   }
 
-  .agent-profile-copy {
-    display: none;
-  }
-
 }
 
 
 /* ============================================================
-   MOBILE
+   MOBILE (< 780px)
 ============================================================ */
 
 @media (max-width: 780px) {
 
+  .agent-header {
+    height: 64px;
+  }
+
   .agent-brand {
     width: auto;
 
+    height: 64px;
+
     border-right: 0;
 
-    padding-left: 16px;
+    padding-left: 12px;
+
+    gap: 8px;
+  }
+
+  .agent-brand-logo {
+    width: 36px;
+
+    height: 36px;
   }
 
   .agent-brand-name {
-    font-size: 16px;
+    font-size: 14.5px;
   }
 
   .agent-brand-subtitle {
-    display: none;
-  }
+    display: block;
 
-  .agent-brand-mark {
-    width: 34px;
-
-    height: 40px;
-  }
-
-  .agent-brand-cross {
-    font-size: 21px;
+    font-size: 9.5px;
   }
 
   .agent-header-right {
-    gap: 7px;
+    gap: 8px;
 
     padding-right: 12px;
   }
 
+  .agent-header-icon-button {
+    display: none;
+  }
+
+  .agent-phone-divider {
+    display: block;
+
+    width: 1px;
+
+    height: 26px;
+
+    background: #e2e8f0;
+
+    margin: 0 2px;
+  }
+
   .agent-mobile-menu {
     display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 36px;
+
+    height: 36px;
+
+    border: 1px solid #dce4de;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #1e293b;
+
+    cursor: pointer;
+
+    padding: 0;
+  }
+
+  .agent-profile-button {
+    gap: 8px;
+
+    padding: 2px 0;
+  }
+
+  .agent-avatar {
+    width: 34px;
+
+    height: 34px;
+  }
+
+  .agent-profile-copy strong {
+    font-size: 12px;
+  }
+
+  .agent-profile-copy span {
+    font-size: 10px;
+  }
+
+  .agent-chevron {
+    display: none;
   }
 
   .agent-sidebar {
@@ -882,7 +1074,7 @@
 
     z-index: 80;
 
-    inset: 72px 0 0;
+    inset: 64px 0 0;
 
     border: 0;
 
@@ -897,14 +1089,117 @@
 
   .agent-main {
     padding-left: 0;
+
+    padding-top: 64px;
   }
 
   .agent-main-inner {
-    padding: 15px;
+    padding: 12px;
   }
 
-  .agent-profile-copy {
+  .agent-footer {
+    padding: 16px 14px calc(14px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .agent-footer-inner {
+    display: grid;
+
+    grid-template-columns: 1fr auto;
+
+    grid-template-areas:
+      "brand social"
+      "pillars pillars"
+      "copy copy";
+
+    gap: 14px 12px;
+
+    align-items: center;
+  }
+
+  .agent-footer-brand {
+    grid-area: brand;
+
+    gap: 9px;
+  }
+
+  .agent-footer-brand img {
+    width: 38px;
+
+    height: 38px;
+  }
+
+  .agent-footer-brand strong {
+    font-size: 13.5px;
+  }
+
+  .agent-footer-brand small {
+    font-size: 9.5px;
+  }
+
+  .agent-footer-pillars {
+    grid-area: pillars;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 6px;
+
+    padding-top: 10px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .agent-footer-pillars li {
+    font-size: 10px;
+
+    gap: 5px;
+  }
+
+  .agent-footer-pillars svg {
+    width: 15px;
+
+    height: 15px;
+  }
+
+  .agent-footer-social {
+    grid-area: social;
+  }
+
+  .agent-footer-social h3 {
+    margin-bottom: 4px;
+
+    font-size: 10px;
+  }
+
+  .agent-footer-social div {
+    gap: 6px;
+  }
+
+  .agent-footer-social a {
+    width: 24px;
+
+    height: 24px;
+  }
+
+  .agent-footer-social a svg {
+    width: 12px;
+
+    height: 12px;
+  }
+
+  .agent-ico-desktop {
+    display: none;
+  }
+
+  .agent-ico-phone {
     display: block;
+  }
+
+  .agent-footer-copy {
+    grid-area: copy;
+
+    font-size: 10px;
   }
 
 }
@@ -916,16 +1211,8 @@
 
 @media (max-width: 520px) {
 
-  .agent-profile-copy {
-    display: none;
-  }
-
-  .agent-header-icon-button {
-    display: none;
-  }
-
   .agent-main-inner {
-    padding: 12px;
+    padding: 10px;
   }
 
 }

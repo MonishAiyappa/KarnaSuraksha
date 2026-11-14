@@ -19,14 +19,18 @@ export default function UserTopHeader({
     <header
       className="
         flex
-        min-h-[126px]
+        min-h-0
+        md:min-h-[126px]
         w-full
         items-start
         justify-between
         bg-white
-        px-[40px]
-        pb-[20px]
-        pt-[28px]
+        px-4
+        pt-3
+        pb-1
+        md:px-[40px]
+        md:pb-[20px]
+        md:pt-[28px]
       "
     >
       {/* LEFT */}
@@ -34,7 +38,8 @@ export default function UserTopHeader({
 
         <p
           className="
-            text-[12px]
+            text-[11px]
+            md:text-[12px]
             font-semibold
             tracking-[0.12em]
             text-[#697383]
@@ -45,8 +50,10 @@ export default function UserTopHeader({
 
         <h1
           className="
-            mt-[5px]
-            text-[30px]
+            mt-[3px]
+            md:mt-[5px]
+            text-[22px]
+            md:text-[30px]
             font-bold
             tracking-[-0.03em]
             text-[#101A31]
@@ -58,10 +65,13 @@ export default function UserTopHeader({
         {subtitle && (
           <p
             className="
-              mt-[5px]
+              mt-[3px]
+              md:mt-[5px]
               max-w-[650px]
-              text-[14px]
-              leading-[1.55]
+              text-[12.5px]
+              md:text-[14px]
+              leading-[1.5]
+              md:leading-[1.55]
               text-[#26384D]
             "
           >
@@ -75,7 +85,8 @@ export default function UserTopHeader({
       {/* RIGHT */}
       <div
         className="
-          flex
+          hidden
+          md:flex
           shrink-0
           items-center
           gap-[17px]

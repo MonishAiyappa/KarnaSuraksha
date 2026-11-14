@@ -4,17 +4,24 @@ import {
   ChevronDown,
   ClipboardList,
   FileText,
+  HeartPulse,
   History,
   LayoutDashboard,
   LogOut,
   Menu,
   ShieldAlert,
+  ShieldCheck,
+  UserRound,
+  Users,
   X,
 } from "lucide-react";
+import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 import { api } from "../api";
 import { useAuth } from "../context/AuthContext";
 import NotificationManager from "./notifications/NotificationManager";
+import emblem from "../assets/landing/emblem.png";
 
 import "./AgentShell.css";
 
@@ -211,23 +218,20 @@ export default function AgentShell({
 
         <div className="agent-brand">
 
-          <div
-            className="agent-brand-mark"
-            aria-hidden="true"
-          >
-            <span className="agent-brand-cross">
-              +
-            </span>
-          </div>
+          <img
+            src={emblem}
+            alt="Karna Suraksha"
+            className="agent-brand-logo"
+          />
 
           <div className="agent-brand-copy">
 
             <div className="agent-brand-name">
-              KARNA SURAKSHA
+              Karna Suraksha
             </div>
 
             <div className="agent-brand-subtitle">
-              Hyperlocal Disease Surveillance
+              Disease Surveillance Platform
             </div>
 
           </div>
@@ -240,60 +244,8 @@ export default function AgentShell({
 
         <div className="agent-header-right">
 
-          {/* Mobile menu */}
-
-          <button
-            type="button"
-            className="agent-mobile-menu"
-            onClick={() =>
-              setMobileOpen(
-                (value) => !value
-              )
-            }
-            aria-label={
-              mobileOpen
-                ? "Close agent navigation"
-                : "Open agent navigation"
-            }
-          >
-            {mobileOpen ? (
-              <X size={21} />
-            ) : (
-              <Menu size={21} />
-            )}
-          </button>
-
           {/* =================================================
-              NOTIFICATIONS
-          ================================================= */}
-
-          <button
-            type="button"
-            className="agent-header-icon-button"
-            onClick={() =>
-              selectTab(
-                "notifications"
-              )
-            }
-            aria-label="Open notifications"
-          >
-
-            <Bell size={21} />
-
-            {notificationCount >
-              0 && (
-              <span className="agent-notification-badge">
-                {notificationCount >
-                9
-                  ? "9+"
-                  : notificationCount}
-              </span>
-            )}
-
-          </button>
-
-          {/* =================================================
-              AGENT PROFILE
+              AGENT PROFILE (Visible on desktop & mobile)
           ================================================= */}
 
           <div
@@ -319,11 +271,7 @@ export default function AgentShell({
                 className="agent-avatar"
                 aria-hidden="true"
               >
-                <span>
-                  {fullName
-                    .slice(0, 1)
-                    .toUpperCase()}
-                </span>
+                <UserRound size={17} />
               </div>
 
               <div className="agent-profile-copy">
@@ -339,12 +287,12 @@ export default function AgentShell({
               </div>
 
               <ChevronDown
-                size={17}
-                className={
+                size={16}
+                className={`agent-chevron ${
                   profileOpen
                     ? "agent-chevron-open"
                     : ""
-                }
+                }`}
               />
 
             </button>
@@ -427,6 +375,61 @@ export default function AgentShell({
             )}
 
           </div>
+
+          {/* =================================================
+              NOTIFICATIONS (Desktop)
+          ================================================= */}
+
+          <button
+            type="button"
+            className="agent-header-icon-button"
+            onClick={() =>
+              selectTab(
+                "notifications"
+              )
+            }
+            aria-label="Open notifications"
+          >
+
+            <Bell size={21} />
+
+            {notificationCount >
+              0 && (
+              <span className="agent-notification-badge">
+                {notificationCount >
+                9
+                  ? "9+"
+                  : notificationCount}
+              </span>
+            )}
+
+          </button>
+
+          {/* Mobile divider */}
+          <div className="agent-phone-divider" aria-hidden="true" />
+
+          {/* Mobile menu hamburger */}
+
+          <button
+            type="button"
+            className="agent-mobile-menu"
+            onClick={() =>
+              setMobileOpen(
+                (value) => !value
+              )
+            }
+            aria-label={
+              mobileOpen
+                ? "Close agent navigation"
+                : "Open agent navigation"
+            }
+          >
+            {mobileOpen ? (
+              <X size={20} />
+            ) : (
+              <Menu size={20} />
+            )}
+          </button>
 
         </div>
 
@@ -555,8 +558,65 @@ export default function AgentShell({
 
         </div>
 
+        <AgentFooter />
+
       </main>
 
     </div>
+  );
+}
+
+/* ============================================================
+   AGENT FOOTER
+============================================================ */
+
+const FOOTER_PILLARS = [
+  { key: "safe", Icon: ShieldCheck, text: "Safe Communities" },
+  { key: "health", Icon: HeartPulse, text: "Better Health" },
+  { key: "together", Icon: Users, text: "Stronger Together" },
+];
+
+function AgentFooter() {
+  return (
+    <footer className="agent-footer">
+      <div className="agent-footer-inner">
+        <div className="agent-footer-brand">
+          <img src={emblem} alt="Karna Suraksha" />
+          <div>
+            <strong>Karna Suraksha</strong>
+            <small>Disease Surveillance Platform</small>
+          </div>
+        </div>
+
+        <ul className="agent-footer-pillars">
+          {FOOTER_PILLARS.map(({ key, Icon, text }) => (
+            <li key={key}>
+              <Icon size={18} />
+              <span>{text}</span>
+            </li>
+          ))}
+        </ul>
+
+        <p className="agent-footer-copy">
+          © {new Date().getFullYear()} Karna Suraksha. All rights reserved.
+        </p>
+
+        <div className="agent-footer-social">
+          <h3>Connect With Us</h3>
+          <div>
+            <a href="#" aria-label="Twitter" onClick={(e) => e.preventDefault()}>
+              <FaTwitter className="agent-ico-desktop" />
+              <FaXTwitter className="agent-ico-phone" />
+            </a>
+            <a href="#" aria-label="LinkedIn" onClick={(e) => e.preventDefault()}>
+              <FaLinkedin />
+            </a>
+            <a href="#" aria-label="GitHub" onClick={(e) => e.preventDefault()}>
+              <FaGithub />
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
   );
 }
