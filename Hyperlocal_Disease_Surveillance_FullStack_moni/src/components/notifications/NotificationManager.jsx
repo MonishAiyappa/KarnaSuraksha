@@ -938,6 +938,8 @@ export default function NotificationManager({
                       outline-none
                       placeholder:text-[#A5ADB7]
                       focus:border-[#3A8D55]
+                      text-center
+                      sm:text-left
                     "
                   />
 
