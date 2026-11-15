@@ -8,12 +8,22 @@ import {
   Loader2,
   LockKeyhole,
   LogIn,
+  Search,
   ShieldCheck,
   ShieldPlus,
   Stethoscope,
   User,
+  Users,
   UsersRound,
+  HeartPulse,
 } from "lucide-react";
+
+import {
+  FaGithub,
+  FaLinkedin,
+} from "react-icons/fa";
+
+import { FaXTwitter } from "react-icons/fa6";
 
 import { useAuth } from "../context/AuthContext";
 
@@ -21,6 +31,7 @@ import "./AdminLogin.css";
 import "./AgentLogin.css";
 
 import agentLoginImage from "../assets/ui/agent-login-left-reference.png";
+import emblem from "../assets/landing/emblem.png";
 
 
 // ============================================================
@@ -46,6 +57,33 @@ const ROLE_META = {
     hint: "Manage agents, reports, and predictions.",
   },
 };
+
+const AGENT_LOGIN_FEATURES = [
+  {
+    title: "Report",
+    description: "Submit disease reports and unusual cases.",
+    Icon: ClipboardList,
+    tone: "report",
+  },
+  {
+    title: "Track",
+    description: "Monitor trends and emerging patterns.",
+    Icon: Search,
+    tone: "track",
+  },
+  {
+    title: "Prevent",
+    description: "Enable faster response and control measures.",
+    Icon: ShieldPlus,
+    tone: "prevent",
+  },
+  {
+    title: "Protect",
+    description: "Safer and healthier communities for all.",
+    Icon: UsersRound,
+    tone: "protect",
+  },
+];
 
 
 // ============================================================
@@ -236,6 +274,10 @@ function AgentLogin({
 
       </div>
 
+      <div className="agent-login-desktop-brand-logo" aria-hidden="true">
+        <img src={emblem} alt="" />
+      </div>
+
 
       {/* ======================================================
           SOFT TRANSITION INTO LOGIN AREA
@@ -281,6 +323,38 @@ function AgentLogin({
         className="agent-login-bottom-shape"
         aria-hidden="true"
       />
+
+      <header className="agent-login-mobile-header">
+        <div className="agent-login-mobile-brand">
+          <img className="agent-login-mobile-brand-logo" src={emblem} alt="" />
+          <span>
+            <strong>KARNA SURAKSHA</strong>
+            <small>Hyperlocal Disease Surveillance</small>
+          </span>
+        </div>
+      </header>
+
+      <section className="agent-login-mobile-intro" aria-label="About Karna Suraksha">
+        <h2>
+          <span>Your Data.</span>
+          <strong>Healthier Communities.</strong>
+        </h2>
+        <p>Report, track and help prevent disease outbreaks at the taluk level.</p>
+
+        <div className="agent-login-mobile-features">
+          {AGENT_LOGIN_FEATURES.map(({ title, description, Icon, tone }) => (
+            <div className={`agent-login-mobile-feature agent-login-mobile-feature--${tone}`} key={title}>
+              <span className="agent-login-mobile-feature-icon">
+                <Icon size={28} strokeWidth={2.2} aria-hidden="true" />
+              </span>
+              <span className="agent-login-mobile-feature-copy">
+                <strong>{title}</strong>
+                <small>{description}</small>
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
 
 
       {/* ======================================================
@@ -593,6 +667,45 @@ function AgentLogin({
         </section>
 
       </main>
+
+      <div className="agent-login-mobile-landscape" aria-hidden="true">
+        <img src={agentLoginImage} alt="" />
+      </div>
+
+      <footer className="agent-login-mobile-footer">
+        <div className="agent-login-mobile-footer-main">
+          <div className="agent-login-mobile-footer-brand">
+            <img src={emblem} alt="" />
+            <span>
+              <strong>Karna Suraksha</strong>
+              <small>Disease Surveillance Platform</small>
+            </span>
+          </div>
+
+          <div className="agent-login-mobile-footer-pillars">
+            <span><ShieldCheck aria-hidden="true" />Safe Communities</span>
+            <span><HeartPulse aria-hidden="true" />Better Health</span>
+            <span className="agent-login-mobile-footer-pillar--together"><Users aria-hidden="true" />Stronger Together</span>
+          </div>
+
+          <div className="agent-login-mobile-footer-social">
+            <strong>Connect With Us</strong>
+            <span>
+              <a href="#" aria-label="X" onClick={(event) => event.preventDefault()}>
+                <FaXTwitter aria-hidden="true" />
+              </a>
+              <a href="#" aria-label="LinkedIn" onClick={(event) => event.preventDefault()}>
+                <FaLinkedin aria-hidden="true" />
+              </a>
+              <a href="#" aria-label="GitHub" onClick={(event) => event.preventDefault()}>
+                <FaGithub aria-hidden="true" />
+              </a>
+            </span>
+          </div>
+
+          <p>© {new Date().getFullYear()} Karna Suraksha. All rights reserved.</p>
+        </div>
+      </footer>
 
     </div>
   );
