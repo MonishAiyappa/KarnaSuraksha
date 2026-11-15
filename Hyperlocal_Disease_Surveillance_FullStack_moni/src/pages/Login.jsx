@@ -31,6 +31,7 @@ import "./AdminLogin.css";
 import "./AgentLogin.css";
 
 import agentLoginImage from "../assets/ui/agent-login-left-reference.png";
+import adminLoginImage from "../assets/ui/admin-login-left-reference.png";
 import emblem from "../assets/landing/emblem.png";
 
 
@@ -82,6 +83,24 @@ const AGENT_LOGIN_FEATURES = [
     description: "Safer and healthier communities for all.",
     Icon: UsersRound,
     tone: "protect",
+  },
+];
+
+const ADMIN_LOGIN_FEATURES = [
+  {
+    title: "Manage",
+    description: "Agents, supervisors and users.",
+    Icon: Users,
+  },
+  {
+    title: "Monitor",
+    description: "Reports and disease trends.",
+    Icon: ClipboardList,
+  },
+  {
+    title: "Ensure",
+    description: "System performance and data integrity.",
+    Icon: ShieldCheck,
   },
 ];
 
@@ -838,104 +857,83 @@ function AdminLogin({
   return (
 
     <div className="admin-login-page">
-
-
-      {/* ======================================================
-          LEFT SIDE
-      ====================================================== */}
-
       <section
         className="admin-login-hero"
         aria-label="Karna Suraksha administration"
       >
-
         <div className="admin-login-hero-image" />
-
+        <div className="admin-login-hero-brand" aria-hidden="true">
+          <img src={emblem} alt="" />
+        </div>
       </section>
 
+      <header className="admin-login-mobile-intro">
+        <div className="admin-login-mobile-brand">
+          <img src={emblem} alt="" />
+          <span>
+            <strong>KARNA SURAKSHA</strong>
+            <small>Hyperlocal Disease Surveillance</small>
+          </span>
+        </div>
+        <h2>
+          <span>Smarter Surveillance.</span>
+          <strong>Stronger Communities.</strong>
+        </h2>
+        <p>Administer, monitor, and manage the entire surveillance system for a healthier tomorrow.</p>
+        <div className="admin-login-mobile-features">
+          {ADMIN_LOGIN_FEATURES.map(({ title, description, Icon }) => (
+            <div className="admin-login-mobile-feature" key={title}>
+              <span className="admin-login-mobile-feature-icon">
+                <Icon aria-hidden="true" />
+              </span>
+              <strong>{title}</strong>
+              <small>{description}</small>
+            </div>
+          ))}
+        </div>
+      </header>
 
-      {/* ======================================================
-          RIGHT SIDE
-      ====================================================== */}
-
-      <section className="admin-login-panel">
-
-
-        {/* Decorative shapes */}
-
+      <main className="admin-login-panel">
         <div
           className="admin-login-decoration admin-login-decoration-top"
           aria-hidden="true"
         />
-
         <div
           className="admin-login-decoration admin-login-decoration-bottom"
           aria-hidden="true"
         />
 
-
-        {/* ====================================================
-            CARD
-        ==================================================== */}
-
         <div className="admin-login-card">
-
-
-          {/* SHIELD */}
-
           <div className="admin-login-icon">
-
             <ShieldPlus
               size={44}
               strokeWidth={2.15}
             />
-
           </div>
 
-
-          {/* TITLE */}
-
           <div className="admin-login-heading">
-
-            <h1>
-              Admin Portal
-            </h1>
-
+            <h1>Admin Portal</h1>
             <p>
               Sign in to access the admin dashboard and
               <br className="admin-login-desktop-break" />
               manage the surveillance system.
             </p>
-
           </div>
-
-
-          {/* ==================================================
-              FORM
-          ================================================== */}
 
           <form
             className="admin-login-form"
             onSubmit={handleSubmit}
           >
-
-
-            {/* USERNAME */}
-
             <div className="admin-login-field">
-
               <label htmlFor="admin-username">
                 Username
               </label>
-
               <div className="admin-login-input-wrapper">
-
                 <User
                   className="admin-login-input-icon"
                   size={23}
                   strokeWidth={2}
                 />
-
                 <input
                   id="admin-username"
                   type="text"
@@ -950,28 +948,19 @@ function AdminLogin({
                   disabled={loading}
                   required
                 />
-
               </div>
-
             </div>
 
-
-            {/* PASSWORD */}
-
             <div className="admin-login-field">
-
               <label htmlFor="admin-password">
                 Password
               </label>
-
               <div className="admin-login-input-wrapper">
-
                 <LockKeyhole
                   className="admin-login-input-icon"
                   size={23}
                   strokeWidth={2}
                 />
-
                 <input
                   id="admin-password"
                   type={
@@ -990,8 +979,6 @@ function AdminLogin({
                   disabled={loading}
                   required
                 />
-
-
                 <button
                   type="button"
                   className="admin-login-password-toggle"
@@ -1008,113 +995,64 @@ function AdminLogin({
                   }
                   disabled={loading}
                 >
-
                   {showPassword ? (
-
                     <EyeOff
                       size={21}
                       strokeWidth={2}
                     />
-
                   ) : (
-
                     <Eye
                       size={21}
                       strokeWidth={2}
                     />
-
                   )}
-
                 </button>
-
               </div>
-
             </div>
 
-
-            {/* ERROR */}
-
             {error && (
-
               <div
                 className="admin-login-error"
                 role="alert"
               >
-
                 {error}
-
               </div>
-
             )}
-
-
-            {/* LOGIN BUTTON */}
 
             <button
               type="submit"
               className="admin-login-submit"
               disabled={loading}
             >
-
               {loading ? (
-
                 <>
-
                   <Loader2
                     size={21}
                     className="admin-login-spinner"
                   />
-
-                  <span>
-                    Logging in...
-                  </span>
-
+                  <span>Logging in...</span>
                 </>
-
               ) : (
-
                 <>
-
                   <LogIn
                     size={22}
                     strokeWidth={2.4}
                   />
-
-                  <span>
-                    Log in
-                  </span>
-
+                  <span>Log in</span>
                 </>
-
               )}
-
             </button>
-
           </form>
-
-
-          {/* DIVIDER */}
 
           <div className="admin-login-divider" />
 
-
-          {/* DEMO */}
-
           <div className="admin-login-demo">
-
             <p>
               Demo credentials (after running the backend
               seed script):
             </p>
-
-            <strong>
-              admin / admin123
-            </strong>
-
+            <strong>admin / admin123</strong>
           </div>
-
-
-          {/* BACK */}
 
           <button
             type="button"
@@ -1122,21 +1060,50 @@ function AdminLogin({
             onClick={onBack}
             disabled={loading}
           >
-
-            <ArrowLeft
-              size={16}
-            />
-
-            <span>
-              Back to home
-            </span>
-
+            <ArrowLeft size={16} />
+            <span>Back to home</span>
           </button>
-
         </div>
+      </main>
 
-      </section>
+      <div className="agent-login-mobile-landscape" aria-hidden="true">
+        <img src={adminLoginImage} alt="" />
+      </div>
 
+      <footer className="agent-login-mobile-footer">
+        <div className="agent-login-mobile-footer-main">
+          <div className="agent-login-mobile-footer-brand">
+            <img src={emblem} alt="" />
+            <span>
+              <strong>Karna Suraksha</strong>
+              <small>Disease Surveillance Platform</small>
+            </span>
+          </div>
+
+          <div className="agent-login-mobile-footer-pillars">
+            <span><ShieldCheck aria-hidden="true" />Safe Communities</span>
+            <span><HeartPulse aria-hidden="true" />Better Health</span>
+            <span className="agent-login-mobile-footer-pillar--together"><Users aria-hidden="true" />Stronger Together</span>
+          </div>
+
+          <div className="agent-login-mobile-footer-social">
+            <strong>Connect With Us</strong>
+            <span>
+              <a href="#" aria-label="X" onClick={(event) => event.preventDefault()}>
+                <FaXTwitter aria-hidden="true" />
+              </a>
+              <a href="#" aria-label="LinkedIn" onClick={(event) => event.preventDefault()}>
+                <FaLinkedin aria-hidden="true" />
+              </a>
+              <a href="#" aria-label="GitHub" onClick={(event) => event.preventDefault()}>
+                <FaGithub aria-hidden="true" />
+              </a>
+            </span>
+          </div>
+
+          <p>© {new Date().getFullYear()} Karna Suraksha. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   );
 }
